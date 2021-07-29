@@ -14,15 +14,8 @@ class MeController extends Controller
         /** @var User $user */
         $user = auth()->user();
 
-        $user->load([
-            "roles",
-            "permissions",
-            "moderated"
-        ]);
-
         return response()->json([
             "user" => $user,
-            'test' => 'test'
         ]);
     }
 }

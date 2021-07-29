@@ -17,6 +17,6 @@ use Illuminate\Support\Facades\Route;
 Route::group(['prefix' => 'auth', 'namespace' => 'Auth'], function () {
 //    Route::post('token', 'LoginController@token');
 
-    Route::post("me", [\App\Http\Controllers\Auth\MeController::class])
+    Route::post("me", '\App\Http\Controllers\Auth\MeController')
         ->middleware(["auth:sanctum"]);
 });
