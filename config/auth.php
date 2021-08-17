@@ -41,9 +41,15 @@ return [
             'provider' => 'users',
         ],
 
-        'api' => [
-            'driver' => 'token',
+        'users' => [
+            'driver' => 'session',
             'provider' => 'users',
+            'hash' => false,
+        ],
+
+        'managers' => [
+            'driver' => 'session',
+            'provider' => 'managers',
             'hash' => false,
         ],
     ],
@@ -70,7 +76,10 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
         ],
-
+        'managers' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\School::class,
+        ],
         // 'users' => [
         //     'driver' => 'database',
         //     'table' => 'users',
