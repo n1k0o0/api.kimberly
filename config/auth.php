@@ -36,20 +36,15 @@ return [
     */
 
     'guards' => [
-        'web' => [
-            'driver' => 'session',
-            'provider' => 'users',
-        ],
-
         'users' => [
-            'driver' => 'session',
+            'driver' => 'sanctum',
             'provider' => 'users',
             'hash' => false,
         ],
 
-        'managers' => [
-            'driver' => 'session',
-            'provider' => 'managers',
+        'internal-users' => [
+            'driver' => 'sanctum',
+            'provider' => 'internal-users',
             'hash' => false,
         ],
     ],
@@ -72,18 +67,14 @@ return [
     */
 
     'providers' => [
+        'internal-users' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\InternalUser::class,
+        ],
         'users' => [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
         ],
-        'managers' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\School::class,
-        ],
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
     ],
 
     /*
