@@ -50,4 +50,14 @@ class ApiController extends Controller
     {
         return response()->json($data, JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
     }
+
+    /**
+     * @param mixed $data
+     *
+     * @return JsonResponse
+     */
+    public function respondUnauthorized($data=null): JsonResponse
+    {
+        return response()->json($data, JsonResponse::HTTP_UNAUTHORIZED);
+    }
 }
