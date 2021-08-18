@@ -12,6 +12,6 @@ class CountryRepository
      */
     public function getCountries(): Collection
     {
-        return Country::all();
+        return Country::query()->with('cities')->get();
     }
 }
