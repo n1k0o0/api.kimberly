@@ -4,7 +4,7 @@ namespace App\Http\Requests\InternalUser;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateInternalUserRequest extends FormRequest
+class PaginateInternalUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,12 +24,10 @@ class CreateInternalUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'login' => 'required|string|min:4',
-            'first_name' => 'sometimes|string|nullable',
-            'last_name' => 'sometimes|string|nullable',
-            'middle_name' => 'sometimes|string|nullable',
-            'phone' => 'sometimes|string|nullable|unique:internal_users,id',
-            'password' => 'required|string|min:6',
+            'login' => 'sometimes|string|nullable',
+            'types' => 'sometimes|array',
+            'created_at_start' => 'sometimes|date',
+            'created_at_end' => 'sometimes|date',
         ];
     }
 }

@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\BusinessLogicException;
 use App\Http\Requests\InternalUser\CreateInternalUserRequest;
 use App\Http\Requests\InternalUser\LoginInternalUserRequest;
+use App\Http\Requests\InternalUser\PaginateInternalUserRequest;
 use App\Http\Requests\InternalUser\UpdateInternalUserRequest;
+use App\Http\Resources\InternalUser\InternalUserCollection;
 use App\Http\Resources\InternalUser\InternalUserResource;
 use App\Models\InternalUser;
 use App\Services\InternalUserService;
@@ -13,21 +16,25 @@ use Illuminate\Support\Facades\Hash;
 
 class InternalUserController extends ApiController
 {
-    private InternalUserService $internalUserService;
-
-    public function __construct(InternalUserService $internalUserService)
-    {
-        $this->internalUserService = $internalUserService;
-    }
+    public function __construct(
+        private InternalUserService $internalUserService
+    ) {}
 
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param PaginateInternalUserRequest $request
+     *
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
-    public function index()
+    public function index(PaginateInternalUserRequest $request): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
-        //
+        $internalUsers = $this->internalUserService->paginateInternalUsers(
+            $request->input('limit'),
+            $request->validated()
+        );
+
+        return InternalUserResource::collection($internalUsers);
     }
 
     /**
@@ -49,11 +56,13 @@ class InternalUserController extends ApiController
      *
      * @param int $id
      *
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
-    public function show($id)
+    public function show($id): JsonResponse
     {
-        //
+        $internalUser = $this->internalUserService->getUserById($id);
+
+        return $this->respondSuccess(InternalUserResource::make($internalUser));
     }
 
     /**
@@ -63,6 +72,7 @@ class InternalUserController extends ApiController
      * @param int $id
      *
      * @return JsonResponse
+     * @throws BusinessLogicException
      */
     public function update(UpdateInternalUserRequest $request, $id): JsonResponse
     {
@@ -94,7 +104,7 @@ class InternalUserController extends ApiController
      */
     public function getMe(): JsonResponse
     {
-        return $this->respondSuccess(InternalUserResource::make(auth('users')->user()));
+        return $this->respondSuccess(InternalUserResource::make(auth('internal-users')->user()));
     }
 
     /**
@@ -105,6 +115,20 @@ class InternalUserController extends ApiController
         /** @var InternalUser $internalUser */
         $internalUser = auth('internal-users')->user();
         $internalUser->tokens()->delete();
+
+        return $this->respondSuccess();
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param int $id
+     *
+     * @return JsonResponse
+     */
+    public function destroy(int $id): JsonResponse
+    {
+        $this->internalUserService->removeInternalUser($id);
 
         return $this->respondSuccess();
     }

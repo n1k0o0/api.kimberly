@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\InternalUser;
 
+use App\Models\InternalUser;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateInternalUserRequest extends FormRequest
 {
@@ -13,7 +15,7 @@ class UpdateInternalUserRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +26,23 @@ class UpdateInternalUserRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'login' => 'sometimes',
+            'first_name' => 'sometimes|string|nullable',
+            'last_name' => 'sometimes|string|nullable',
+            'middle_name' => 'sometimes|string|nullable',
+            'phone' => [
+                'sometimes|string|nullable',
+                'sometimes',
+                'string',
+                'nullable',
+                Rule::unique('internal_users', 'phone')->ignore($this->input('id')),
+            ],
+            'type' => [
+                'sometimes',
+                'string',
+                Rule::in(InternalUser::TYPES),
+            ],
+            'password' => 'sometimes'
         ];
     }
 }

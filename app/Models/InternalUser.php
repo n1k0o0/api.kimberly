@@ -11,16 +11,33 @@ class InternalUser extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    const TYPE_ADMIN = 0;
-    const TYPE_JURY = 1;
+    const TYPE_SUPER_ADMIN = 'super_admin';
+    const TYPE_ADMIN = 'admin';
+    const TYPE_JURY = 'jury';
     const TYPES = [
         self::TYPE_ADMIN,
         self::TYPE_JURY,
     ];
 
-    protected $fillable = ['login', 'password', 'type', 'super_admin'];
+    protected $fillable = ['login', 'first_name', 'last_name', 'middle_name', 'password', 'phone', 'type'];
 
-    protected $casts = [
-        'super_admin' => 'boolean'
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'password',
+        'remember_token',
     ];
+
+
+    public function getFullNameAttribute(): string
+    {
+        return implode(" ", [
+            $this->last_name ?? '',
+            $this->first_name ?? '',
+            $this->middle_name ?? '',
+        ]);
+    }
 }

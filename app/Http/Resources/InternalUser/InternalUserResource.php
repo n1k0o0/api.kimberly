@@ -14,6 +14,16 @@ class InternalUserResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'login' => $this->login,
+            'type' => $this->type,
+            'first_name' => $this->first_name ?? '',
+            'last_name' => $this->last_name ?? '',
+            'middle_name' => $this->middle_name ?? '',
+            'full_name' => $this->full_name,
+            'phone' => $this->phone ?? '',
+            'created_at' => optional($this->created_at)->timestamp,
+        ];
     }
 }
