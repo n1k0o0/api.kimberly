@@ -13,7 +13,7 @@ class CreateInternalUsersTable extends Migration
      */
     public function up()
     {
-        $internalUserTypes = \App\Models\InternalUser::TYPES + [\App\Models\InternalUser::TYPE_SUPER_ADMIN];
+        $internalUserTypes = [...\App\Models\InternalUser::TYPES, \App\Models\InternalUser::TYPE_SUPER_ADMIN];
         Schema::create('internal_users', function (Blueprint $table) use ($internalUserTypes) {
             $table->id();
             $table->string('login')->unique();

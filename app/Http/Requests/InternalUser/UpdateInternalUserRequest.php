@@ -31,7 +31,6 @@ class UpdateInternalUserRequest extends FormRequest
             'last_name' => 'sometimes|string|nullable',
             'middle_name' => 'sometimes|string|nullable',
             'phone' => [
-                'sometimes|string|nullable',
                 'sometimes',
                 'string',
                 'nullable',

@@ -54,14 +54,13 @@ Route::middleware(['auth:users'])->group(function () {
 });
 
 Route::prefix('countries')->group(function () {
-    Route::apiResource('/', \App\Http\Controllers\CountryController::class);
 });
-Route::prefix('cities')->group(function () {
-    Route::apiResource('/', \App\Http\Controllers\CityController::class);
-});
-Route::prefix('stadiums')->group(function () {
-    Route::apiResource('/', \App\Http\Controllers\StadiumController::class);
-});
-Route::post('/init', function () {
+Route::apiResource('countries', \App\Http\Controllers\CountryController::class);
 
-});
+Route::prefix('cities')->group(function () {});
+Route::apiResource('cities', \App\Http\Controllers\CityController::class);
+
+Route::prefix('stadiums')->group(function () {});
+Route::apiResource('stadiums', \App\Http\Controllers\StadiumController::class);
+
+Route::post('/init', function () {});

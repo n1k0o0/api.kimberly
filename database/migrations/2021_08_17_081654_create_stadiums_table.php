@@ -15,7 +15,8 @@ class CreateStadiumsTable extends Migration
     {
         Schema::create('stadiums', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('title');
+            $table->string('address');
             $table->foreignId('city_id')->references('id')->on('cities')->cascadeOnUpdate()->cascadeOnDelete();
         });
     }

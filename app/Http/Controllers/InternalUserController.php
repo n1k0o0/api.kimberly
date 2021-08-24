@@ -7,11 +7,11 @@ use App\Http\Requests\InternalUser\CreateInternalUserRequest;
 use App\Http\Requests\InternalUser\LoginInternalUserRequest;
 use App\Http\Requests\InternalUser\PaginateInternalUserRequest;
 use App\Http\Requests\InternalUser\UpdateInternalUserRequest;
-use App\Http\Resources\InternalUser\InternalUserCollection;
 use App\Http\Resources\InternalUser\InternalUserResource;
 use App\Models\InternalUser;
 use App\Services\InternalUserService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Hash;
 
 class InternalUserController extends ApiController
@@ -25,9 +25,9 @@ class InternalUserController extends ApiController
      *
      * @param PaginateInternalUserRequest $request
      *
-     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     * @return AnonymousResourceCollection
      */
-    public function index(PaginateInternalUserRequest $request): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+    public function index(PaginateInternalUserRequest $request): AnonymousResourceCollection
     {
         $internalUsers = $this->internalUserService->paginateInternalUsers(
             $request->input('limit'),

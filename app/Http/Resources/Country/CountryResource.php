@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Country;
 
+use App\Http\Resources\City\CityResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class CountryResource extends JsonResource
@@ -17,6 +18,7 @@ class CountryResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'cities' => CityResource::collection($this->whenLoaded('cities')),
         ];
     }
 }
