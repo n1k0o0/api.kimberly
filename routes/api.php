@@ -24,9 +24,6 @@ Route::middleware(['auth:internal-users'])->group(function () {
     Route::prefix('/notifications')->group(function () {
 
     });
-    Route::prefix('/leagues')->group(function () {
-
-    });
     Route::prefix('/tables')->group(function () {
 
     });
@@ -62,5 +59,7 @@ Route::apiResource('cities', \App\Http\Controllers\CityController::class);
 
 Route::prefix('stadiums')->group(function () {});
 Route::apiResource('stadiums', \App\Http\Controllers\StadiumController::class);
+
+Route::apiResource('leagues', \App\Http\Controllers\LeagueController::class);
 
 Route::post('/init', function () {});
