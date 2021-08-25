@@ -4,6 +4,7 @@ namespace App\Http\Resources\League;
 
 use App\Http\Resources\City\CityResource;
 use App\Http\Resources\Country\CountryResource;
+use App\Http\Resources\Division\DivisionResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class LeagueResource extends JsonResource
@@ -23,6 +24,7 @@ class LeagueResource extends JsonResource
             'country_id' => $this->when($this->country, $this->country->id),
             'city' => CityResource::make($this->whenLoaded('city')),
             'country' => CountryResource::make($this->whenLoaded('country')),
+            'divisions' => DivisionResource::collection($this->whenLoaded('divisions')),
         ];
     }
 }

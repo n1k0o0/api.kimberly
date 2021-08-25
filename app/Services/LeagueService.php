@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Division;
 use App\Models\League;
 use App\Repositories\LeagueRepository;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -42,7 +43,9 @@ class LeagueService
      */
     public function createLeague(array $data): League|Model
     {
+        /** @var League $league */
         $league = League::query()->create($data);
+        $divisions = $league->divisions()->createMany($data['divisions']);
 
         return $league;
     }

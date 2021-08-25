@@ -5,11 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 
-/**
- *
- */
 class League extends Model
 {
     use HasFactory;
@@ -38,5 +36,13 @@ class League extends Model
     public function country(): HasOneThrough
     {
         return $this->hasOneThrough(Country::class, City::class, 'id', 'id', 'city_id', 'country_id');
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function divisions(): HasMany
+    {
+        return $this->hasMany(Division::class);
     }
 }

@@ -17,7 +17,7 @@ class LeagueRepository
     public function getById(int $leagueId): Model|League|null
     {
         return League::query()
-            ->with('city', 'country')
+            ->with('city', 'country', 'divisions')
             ->find($leagueId);
     }
 
@@ -38,6 +38,7 @@ class LeagueRepository
             )
             ->when(isset($data['city_ids']), fn (Builder $query) => $query->whereIn('city_id', $data['city_ids']))
             ->with('city', 'country')
+            ->latest()
             ->paginate($limit);
     }
 }

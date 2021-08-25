@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\League;
+namespace App\Http\Requests\Division;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateLeagueRequest extends FormRequest
+class CreateDivisionRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,10 +24,8 @@ class CreateLeagueRequest extends FormRequest
     public function rules()
     {
         return [
+            'league_id' => 'required|string|exists:leagues,id',
             'name' => 'required|string',
-            'city_id' => 'required|integer|exists:cities,id',
-            'divisions.*' => 'sometimes|array',
-            'divisions.*.name' => 'required|string',
         ];
     }
 }

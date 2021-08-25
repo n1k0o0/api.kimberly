@@ -62,4 +62,6 @@ Route::apiResource('stadiums', \App\Http\Controllers\StadiumController::class);
 
 Route::apiResource('leagues', \App\Http\Controllers\LeagueController::class);
 
+Route::apiResource('divisions', \App\Http\Controllers\DivisionController::class);
+
 Route::post('/init', function () {});
