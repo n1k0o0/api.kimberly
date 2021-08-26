@@ -64,4 +64,12 @@ Route::apiResource('leagues', \App\Http\Controllers\LeagueController::class);
 
 Route::apiResource('divisions', \App\Http\Controllers\DivisionController::class);
 
+Route::prefix('tournaments')->group(function () {
+    Route::prefix('{id}')->group(function () {
+        Route::put('status', [\App\Http\Controllers\TournamentController::class, 'updateStatus']);
+    });
+    Route::get('/current', [\App\Http\Controllers\TournamentController::class, 'getCurrent']);
+});
+Route::apiResource('tournaments', \App\Http\Controllers\TournamentController::class);
+
 Route::post('/init', function () {});
