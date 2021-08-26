@@ -45,7 +45,9 @@ class LeagueService
     {
         /** @var League $league */
         $league = League::query()->create($data);
-        $divisions = $league->divisions()->createMany($data['divisions']);
+        if (isset($data['divisions'])) {
+            $divisions = $league->divisions()->createMany($data['divisions']);
+        }
 
         return $league;
     }
