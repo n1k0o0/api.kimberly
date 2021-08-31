@@ -2,24 +2,24 @@
 
 namespace App\Repositories;
 
-use App\Models\League;
+use App\Models\School;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
-class LeagueRepository
+class SchoolRepository
 {
     /**
-     * @param int $leagueId
+     * @param int $tournamentId
      *
-     * @return Model|League|null
+     * @return Model|School|null
      */
-    public function getById(int $leagueId): Model|League|null
+    public function getById(int $tournamentId): Model|School|null
     {
-        return League::query()
-            ->with('city', 'country', 'divisions')
-            ->find($leagueId);
+        return School::query()
+            ->with('city', 'country', 'coaches', 'teams', 'teams.division', 'teams.league', 'teams.color', 'social_links')
+            ->find($tournamentId);
     }
 
     /**
@@ -27,13 +27,13 @@ class LeagueRepository
      *
      * @param int|null $limit
      *
-     * @return LengthAwarePaginator|Collection
+     * @return Collection|LengthAwarePaginator
      */
-    public function getLeagues(array $data=[], int $limit=null): LengthAwarePaginator|Collection
+    public function getSchools(array $data = [], int $limit = null): Collection|LengthAwarePaginator
     {
-        $query = League::query()
+        $query = School::query()
             ->when(isset($data['country_ids']),
-                fn (Builder $query) =>  $query->whereHas(
+                fn(Builder $query) => $query->whereHas(
                     'country',
                     fn(Builder $builder) => $builder->whereIn('countries.id', $data['country_ids'])
                 )
@@ -42,9 +42,10 @@ class LeagueRepository
                 'country',
                 fn(Builder $builder) => $builder->where('countries.id', $data['country_id'])
             ))
-            ->when(isset($data['city_ids']), fn (Builder $query) => $query->whereIn('city_id', $data['city_ids']))
+            ->when(isset($data['city_ids']), fn(Builder $query) => $query->whereIn('city_id', $data['city_ids']))
             ->when(isset($data['city_id']), fn (Builder $query) => $query->where('city_id', $data['city_id']))
-            ->with('city', 'country', 'divisions');
+            ->with('city', 'country');
+
 
         if ($limit) {
             return $query->latest()->paginate($limit);

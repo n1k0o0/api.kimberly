@@ -6,6 +6,7 @@ use App\Models\Division;
 use App\Models\League;
 use App\Repositories\LeagueRepository;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -25,13 +26,13 @@ class LeagueService
 
     /**
      * @param array $data
-     * @param int $limit
+     * @param int|null $limit
      *
-     * @return LengthAwarePaginator
+     * @return Collection|LengthAwarePaginator
      */
-    public function paginateLeagues(array $data = [], int $limit = 10): LengthAwarePaginator
+    public function getLeagues(array $data = [], int $limit = null): Collection|LengthAwarePaginator
     {
-        $leagues = $this->leagueRepository->paginateStadiums($limit, $data);
+        $leagues = $this->leagueRepository->getLeagues($data, $limit);
 
         return $leagues;
     }

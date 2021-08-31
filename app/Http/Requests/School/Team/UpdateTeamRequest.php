@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\League;
+namespace App\Http\Requests\School\Team;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class PaginateLeagueRequest extends FormRequest
+class UpdateTeamRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +13,7 @@ class PaginateLeagueRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return false;
     }
 
     /**
@@ -24,11 +24,7 @@ class PaginateLeagueRequest extends FormRequest
     public function rules()
     {
         return [
-            'limit' => 'sometimes|integer|nullable',
-            'country_ids' => 'sometimes|array',
-            'country_id' => 'sometimes|integer',
-            'city_ids' => 'sometimes|array',
-            'city_id' => 'sometimes|integer',
+            //
         ];
     }
 }

@@ -24,4 +24,9 @@ class City extends Model
     {
         return $this->hasMany(Stadium::class);
     }
+
+    public function leagues(): HasMany
+    {
+        return $this->hasMany(League::class, 'city_id', 'id');
+    }
 }

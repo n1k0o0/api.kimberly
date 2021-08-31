@@ -12,6 +12,6 @@ class CountryRepository
      */
     public function getCountries(): Collection
     {
-        return Country::query()->with('cities')->get();
+        return Country::query()->with('cities', 'cities.leagues', 'cities.leagues.divisions')->get();
     }
 }

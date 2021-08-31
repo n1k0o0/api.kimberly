@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\League;
+namespace App\Http\Requests\School;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class PaginateLeagueRequest extends FormRequest
+class PaginateSchoolsRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

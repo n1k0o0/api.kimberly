@@ -28,7 +28,7 @@ class LeagueController extends ApiController
      */
     public function index(PaginateLeagueRequest $request): AnonymousResourceCollection
     {
-        $leagues = $this->leagueService->paginateLeagues(
+        $leagues = $this->leagueService->getLeagues(
             $request->validated(),
             $request->input('limit'),
         );

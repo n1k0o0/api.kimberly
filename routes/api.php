@@ -72,4 +72,13 @@ Route::prefix('tournaments')->group(function () {
 });
 Route::apiResource('tournaments', \App\Http\Controllers\TournamentController::class);
 
+Route::prefix('schools')->group(function () {
+    Route::get('all', [\App\Http\Controllers\SchoolController::class, 'getAll']);
+});
+Route::apiResource('schools', \App\Http\Controllers\SchoolController::class);
+
+Route::apiResource('teams', \App\Http\Controllers\TeamController::class);
+
+Route::apiResource('coaches', \App\Http\Controllers\CoachController::class);
+
 Route::post('/init', function () {});

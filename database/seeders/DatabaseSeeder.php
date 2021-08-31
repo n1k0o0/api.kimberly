@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\School;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -17,7 +18,10 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UserSeeder::class,
             InternalUserSeeder::class,
-            CountryAndCitySeeder::class
+            CountryAndCitySeeder::class,
+            ColorSeeder::class,
+            SchoolSeeder::class,
         ]);
+
     }
 }
