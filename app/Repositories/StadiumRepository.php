@@ -37,6 +37,7 @@ class StadiumRepository
                 )
             )
             ->when(isset($data['city_ids']), fn (Builder $query) => $query->whereIn('city_id', $data['city_ids']))
+            ->when(isset($data['city_id']), fn (Builder $query) => $query->where('city_id', $data['city_id']))
             ->with('city', 'country')
             ->paginate($limit);
     }

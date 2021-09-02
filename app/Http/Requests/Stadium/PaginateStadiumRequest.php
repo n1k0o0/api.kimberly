@@ -26,7 +26,7 @@ class PaginateStadiumRequest extends FormRequest
         return [
             'limit' => 'required|integer',
             'country_ids' => 'sometimes|array',
-            'city_ids' => 'sometimes|array',
+            'city_id' => 'sometimes|integer',
         ];
     }
 }
