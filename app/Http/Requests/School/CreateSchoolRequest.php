@@ -25,10 +25,21 @@ class CreateSchoolRequest extends FormRequest
     {
         return [
             'city_id' => 'required|integer|exists:cities,id',
-            'name' => 'sometimes|string|nullable',
+            'name' => 'required|string|nullable',
             'description' => 'sometimes|string|nullable',
-            'email' => 'sometimes|email|nullable',
-            'phone' => 'sometimes|email|nullable',
+            'email' => 'required|email|nullable',
+            'phone' => 'sometimes|nullable',
+            'avatar' => 'sometimes|nullable',
+            'teams' => 'sometimes|array',
+            'coaches' => 'sometimes|array',
+            'user_id' => 'required|integer',
         ];
+    }
+
+    public function prepareForValidation()
+    {
+        return $this->merge([
+            'user_id' => 1,
+        ]);
     }
 }

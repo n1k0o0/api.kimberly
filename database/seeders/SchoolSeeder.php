@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\School;
 use Faker\Factory;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Str;
 
 class SchoolSeeder extends Seeder
 {

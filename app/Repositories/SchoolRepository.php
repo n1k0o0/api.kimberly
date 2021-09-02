@@ -18,7 +18,7 @@ class SchoolRepository
     public function getById(int $tournamentId): Model|School|null
     {
         return School::query()
-            ->with('city', 'country', 'coaches', 'teams', 'teams.division', 'teams.league', 'teams.color', 'social_links')
+            ->with('city', 'country', 'coaches', 'teams', 'teams.division', 'teams.league', 'teams.color', 'social_links', 'media_avatar')
             ->find($tournamentId);
     }
 

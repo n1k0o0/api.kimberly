@@ -38,16 +38,21 @@ class SchoolService
      */
     public function createSchool(array $data): Model
     {
+        $data['status'] = School::STATUS_MODERATION;
         try {
             DB::beginTransaction();
             /** @var School $school */
             $school = School::query()->create($data);
-//            if (isset($data['teams'])) {
-//                $school->teams()->createMany($data['teams']);
-//            }
-//            if (isset($data['coaches'])) {
-//                $school->coaches()->createMany($data['coaches']);
-//            }
+            if (isset($data['avatar'])) {
+                $school->addMedia($data['avatar'])->toMediaCollection(School::AVATAR_MEDIA_COLLECTION);
+                $school->loadMissing('media_avatar');
+            }
+            if (isset($data['teams'])) {
+                $school->teams()->createMany($data['teams']);
+            }
+            if (isset($data['coaches'])) {
+                $school->coaches()->createMany($data['coaches']);
+            }
             DB::commit();
             event(new SchoolCreated($school));
         } catch (\Exception $exception) {
@@ -73,7 +78,18 @@ class SchoolService
     public function updateSchool(int $schoolId, array $data): Model|School|null
     {
         $school = $this->schoolRepository->getById($schoolId);
-        $school->update($data);
+        try {
+            DB::beginTransaction();
+            $school->update($data);
+            if (isset($data['avatar'])) {
+                $school->replaceMedia($data['avatar'],School::AVATAR_MEDIA_COLLECTION);
+                $school->loadMissing('media_avatar');
+            }
+            DB::commit();
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            throw $exception;
+        }
 
         return $school;
     }

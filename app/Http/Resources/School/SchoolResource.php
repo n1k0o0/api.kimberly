@@ -37,6 +37,7 @@ class SchoolResource extends JsonResource
             'teams' => TeamResource::collection($this->whenLoaded('teams')),
             'coaches' => CoachResource::collection($this->whenLoaded('coaches')),
             'social_links' => SocialLinkResource::collection($this->whenLoaded('social_links')),
+            'avatar' => SchoolAvatarResource::make($this->whenLoaded('media_avatar')),
         ];
     }
 }
