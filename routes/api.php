@@ -74,6 +74,7 @@ Route::apiResource('tournaments', \App\Http\Controllers\TournamentController::cl
 
 Route::prefix('schools')->group(function () {
     Route::get('all', [\App\Http\Controllers\SchoolController::class, 'getAll']);
+    Route::put('status', [\App\Http\Controllers\SchoolController::class, 'setStatus']);
 });
 Route::apiResource('schools', \App\Http\Controllers\SchoolController::class);
 

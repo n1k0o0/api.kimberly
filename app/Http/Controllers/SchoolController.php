@@ -5,14 +5,17 @@ namespace App\Http\Controllers;
 use App\Http\Requests\School\CreateSchoolRequest;
 use App\Http\Requests\School\PaginateSchoolsRequest;
 use App\Http\Requests\School\UpdateSchoolRequest;
+use App\Http\Requests\School\UpdateSchoolStatusRequest;
 use App\Http\Resources\School\SchoolResource;
 use App\Http\Resources\School\SchoolResourceCollection;
 use App\Services\SchoolService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class SchoolController extends ApiController
 {
+    /**
+     * @param SchoolService $schoolService
+     */
     public function __construct(private SchoolService $schoolService)
     {
     }
@@ -80,11 +83,30 @@ class SchoolController extends ApiController
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     *
+     * @return JsonResponse
+     * @throws \App\Exceptions\BusinessLogicException
      */
-    public function destroy($id)
+    public function destroy(int $id): JsonResponse
     {
-        //
+        $this->schoolService->removeSchool($id);
+
+        return $this->respondSuccess();
+    }
+
+    /**
+     * @param UpdateSchoolStatusRequest $request
+     *
+     * @return JsonResponse
+     */
+    public function setStatus(UpdateSchoolStatusRequest $request): JsonResponse
+    {
+        $school = $this->schoolService->setStatus(
+            $request->input('school_id'),
+            $request->input('status')
+        );
+
+        return $this->respondSuccess(SchoolResource::make($school));
     }
 }

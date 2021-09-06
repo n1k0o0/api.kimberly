@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Events\School\SchoolCreated;
+use App\Exceptions\BusinessLogicException;
 use App\Models\School;
 use App\Repositories\SchoolRepository;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -75,6 +76,14 @@ class SchoolService
         return $school;
     }
 
+    /**
+     * @param int $schoolId
+     * @param array $data
+     *
+     * @return Model|School|null
+     * @throws \Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist
+     * @throws \Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig
+     */
     public function updateSchool(int $schoolId, array $data): Model|School|null
     {
         $school = $this->schoolRepository->getById($schoolId);
@@ -90,6 +99,38 @@ class SchoolService
             DB::rollBack();
             throw $exception;
         }
+
+        return $school;
+    }
+
+    /**
+     * @param int $schoolId
+     *
+     * @return bool|null
+     * @throws BusinessLogicException
+     */
+    public function removeSchool(int $schoolId): ?bool
+    {
+        $school = $this->schoolRepository->getById($schoolId);
+        if ($school->status !== School::STATUS_MODERATION) {
+            throw new BusinessLogicException("Школа не в статусе модерации");
+        }
+
+        return $school->delete();
+    }
+
+    /**
+     * @param int $schoolId
+     * @param string $status
+     *
+     * @return Model|School|null
+     */
+    public function setStatus(int $schoolId, string $status): Model|School|null
+    {
+        $school = $this->schoolRepository->getById($schoolId);
+        $school->update([
+            'status' => $status,
+        ]);
 
         return $school;
     }
