@@ -81,4 +81,6 @@ Route::apiResource('teams', \App\Http\Controllers\TeamController::class);
 
 Route::apiResource('coaches', \App\Http\Controllers\CoachController::class);
 
+Route::apiResource('social-links', \App\Http\Controllers\SocialLinkController::class);
+
 Route::post('/init', function () {});

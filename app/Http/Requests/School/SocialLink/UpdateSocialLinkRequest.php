@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\School\Team;
+namespace App\Http\Requests\School\SocialLink;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateTeamRequest extends FormRequest
+class UpdateSocialLinkRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,9 +24,8 @@ class UpdateTeamRequest extends FormRequest
     public function rules()
     {
         return [
-            'school_id' => 'sometimes|integer',
-            'division_id' => 'sometimes|integer',
-            'color_id' => 'sometimes|integer',
+            'service' => 'string|nullable',
+            'link' => 'string|nullable|url',
         ];
     }
 }

@@ -20,6 +20,7 @@ class TeamService
     {
         $team = Team::query()->create($data);
         $team->loadMissing('division', 'league', 'color');
+
         return $team;
     }
 
@@ -33,6 +34,7 @@ class TeamService
     {
         $team = Team::query()->find($teamId);
         $team->update($data);
+        $team->loadMissing('division', 'league', 'color');
 
         return $team;
     }

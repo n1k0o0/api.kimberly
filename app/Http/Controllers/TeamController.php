@@ -7,7 +7,6 @@ use App\Http\Requests\School\Team\UpdateTeamRequest;
 use App\Http\Resources\Team\TeamResource;
 use App\Services\TeamService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class TeamController extends ApiController
 {
