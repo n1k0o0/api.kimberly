@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\ApiController;
 use App\Http\Requests\City\IndexCitiesRequest;
 use App\Http\Resources\City\CityResource;
 use App\Services\CityService;

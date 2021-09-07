@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\ApiController;
 use App\Http\Requests\School\Coach\CreateCoachRequest;
 use App\Http\Requests\School\Coach\UpdateCoachRequest;
 use App\Http\Resources\Coach\CoachResource;
 use App\Services\CoachService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class CoachController extends ApiController
 {

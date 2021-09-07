@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\ApiController;
 use App\Http\Requests\League\CreateLeagueRequest;
 use App\Http\Requests\League\PaginateLeagueRequest;
 use App\Http\Requests\League\UpdateLeagueRequest;

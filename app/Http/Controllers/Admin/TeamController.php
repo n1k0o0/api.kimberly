@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\ApiController;
 use App\Http\Requests\School\Team\CreateTeamRequest;
 use App\Http\Requests\School\Team\UpdateTeamRequest;
 use App\Http\Resources\Team\TeamResource;

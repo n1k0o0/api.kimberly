@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\ApiController;
 use App\Http\Requests\School\PaginateSchoolsRequest;
 use App\Http\Requests\School\UpdateSchoolRequest;
 use App\Http\Requests\School\UpdateSchoolStatusRequest;

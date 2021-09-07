@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\InternalUser\LoginInternalUserRequest;
+use App\Http\Resources\InternalUser\InternalUserResource;
 use App\Models\InternalUser;
 use App\Services\InternalUserService;
 use Illuminate\Http\JsonResponse;
@@ -53,5 +54,15 @@ class AuthInternalUserController extends ApiController
         auth('internal-users')->logout();
 
         return $this->respondSuccess();
+    }
+
+    /**
+     * @return JsonResponse
+     */
+    public function getMe(): JsonResponse
+    {
+        $user = $this->internalUserService->getUserById(auth('internal-users')->id());
+
+        return $this->respondSuccess(InternalUserResource::make($user));
     }
 }

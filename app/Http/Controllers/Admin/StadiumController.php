@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\ApiController;
 use App\Http\Requests\Stadium\CreateStadiumRequest;
 use App\Http\Requests\Stadium\PaginateStadiumRequest;
 use App\Http\Requests\Stadium\UpdateStadiumRequest;

@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\ApiController;
 use App\Http\Requests\School\SocialLink\CreateSocialLinkRequest;
 use App\Http\Requests\School\SocialLink\UpdateSocialLinkRequest;
 use App\Http\Resources\SocialLink\SocialLinkResource;

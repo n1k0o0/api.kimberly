@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\ApiController;
 use App\Http\Requests\Tournament\CreateTournamentRequest;
 use App\Http\Requests\Tournament\GetCurrentTournamentRequest;
 use App\Http\Requests\Tournament\PaginateTournamentRequest;
