@@ -20,7 +20,7 @@ class InternalUserResource extends JsonResource
             'type' => $this->type,
             'first_name' => $this->first_name ?? '',
             'last_name' => $this->last_name ?? '',
-            'middle_name' => $this->middle_name ?? '',
+            'patronymic' => $this->patronymic ?? '',
             'full_name' => $this->full_name,
             'phone' => $this->phone ?? '',
             'created_at' => optional($this->created_at)->timestamp,

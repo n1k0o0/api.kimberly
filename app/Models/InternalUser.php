@@ -21,7 +21,7 @@ class InternalUser extends Authenticatable implements JWTSubject
         self::TYPE_JURY,
     ];
 
-    protected $fillable = ['login', 'first_name', 'last_name', 'middle_name', 'password', 'phone', 'type'];
+    protected $fillable = ['login', 'first_name', 'last_name', 'patronymic', 'password', 'phone', 'type'];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -58,7 +58,7 @@ class InternalUser extends Authenticatable implements JWTSubject
         return implode(" ", [
             $this->last_name ?? '',
             $this->first_name ?? '',
-            $this->middle_name ?? '',
+            $this->patronymic ?? '',
         ]);
     }
 }

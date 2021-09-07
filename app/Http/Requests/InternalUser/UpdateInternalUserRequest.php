@@ -29,7 +29,7 @@ class UpdateInternalUserRequest extends FormRequest
             'login' => 'sometimes',
             'first_name' => 'sometimes|string|nullable',
             'last_name' => 'sometimes|string|nullable',
-            'middle_name' => 'sometimes|string|nullable',
+            'patronymic' => 'sometimes|string|nullable',
             'phone' => [
                 'sometimes',
                 'string',

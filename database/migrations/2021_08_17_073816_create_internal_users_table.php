@@ -19,7 +19,7 @@ class CreateInternalUsersTable extends Migration
             $table->string('login')->unique();
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
-            $table->string('middle_name')->nullable();
+            $table->string('patronymic')->nullable();
             $table->string('phone')->nullable();
             $table->string('password');
             $table->enum('type', $internalUserTypes);

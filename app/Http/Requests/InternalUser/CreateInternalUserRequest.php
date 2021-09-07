@@ -27,7 +27,7 @@ class CreateInternalUserRequest extends FormRequest
             'login' => 'required|string|min:4',
             'first_name' => 'sometimes|string|nullable',
             'last_name' => 'sometimes|string|nullable',
-            'middle_name' => 'sometimes|string|nullable',
+            'patronymic' => 'sometimes|string|nullable',
             'phone' => 'sometimes|string|nullable|unique:internal_users,id',
             'password' => 'required|string|min:6',
         ];

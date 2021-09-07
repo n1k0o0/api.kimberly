@@ -16,12 +16,21 @@ class InternalUserSeeder extends Seeder
     public function run()
     {
         InternalUser::query()->create([
-            'login' => 'admin',
+            'login' => 'admin@admin.ru',
             'first_name' => 'Super',
             'last_name' => 'Admin',
-            'middle_name' => 'Admin',
+            'patronymic' => 'Admin',
             'phone' => '1112223345',
             'type' => InternalUser::TYPE_SUPER_ADMIN,
+            'password' => Hash::make('111111')
+        ]);
+
+        InternalUser::query()->create([
+            'login' => 'admin',
+            'first_name' => 'Just',
+            'last_name' => 'Admin',
+            'phone' => '11122233456',
+            'type' => InternalUser::TYPE_ADMIN,
             'password' => Hash::make('111111')
         ]);
 
@@ -29,7 +38,7 @@ class InternalUserSeeder extends Seeder
             'login' => 'jury',
             'first_name' => 'Just',
             'last_name' => 'Jury',
-            'phone' => '11122233456',
+            'phone' => '11122233457',
             'type' => InternalUser::TYPE_JURY,
             'password' => Hash::make('111111')
         ]);
