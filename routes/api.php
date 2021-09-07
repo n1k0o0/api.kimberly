@@ -18,8 +18,7 @@ Route::prefix('internal_users')->group(function () {
 });
 Route::middleware(['auth:internal-users'])->group(function () {
     Route::prefix('internal_users')->group(function () {
-//        Route::post('/refresh-token', [\App\Http\Controllers\Admin\AuthInternalUserController::class, 'refreshToken']);
-        Route::post('/revoke-token', [\App\Http\Controllers\Admin\AuthInternalUserController::class, 'revokeToken']);
+        Route::post('revoke-token', [\App\Http\Controllers\Admin\AuthInternalUserController::class, 'revokeToken']);
     });
     Route::apiResource('internal_users',\App\Http\Controllers\Admin\InternalUserController::class);
 
@@ -47,7 +46,7 @@ Route::middleware(['auth:internal-users'])->group(function () {
     Route::prefix('schools')->group(function () {
         Route::put('status', [\App\Http\Controllers\SchoolController::class, 'setStatus']);
     });
-    Route::apiResource('schools', \App\Http\Controllers\SchoolController::class);
+    Route::apiResource('schools', \App\Http\Controllers\SchoolController::class)->except('store');
 
     Route::apiResource('teams', \App\Http\Controllers\TeamController::class);
 
@@ -70,7 +69,10 @@ Route::prefix('users')->group(function () {
 Route::middleware(['auth:users'])->group(function () {
     Route::prefix('users')->group(function () {
         Route::post('revoke-token', [\App\Http\Controllers\Api\UserController::class, 'revokeToken']);
-//        Route::post('/refresh-token', [\App\Http\Controllers\AuthUserController::class, 'refreshToken']);
+        Route::post('me', [\App\Http\Controllers\Api\UserController::class, 'getMe']);
     });
     Route::apiResource('users',\App\Http\Controllers\Api\UserController::class);
+
+    Route::put('schools', [\App\Http\Controllers\Api\SchoolController::class, 'updateSchool']);
+    Route::apiResource('schools', \App\Http\Controllers\Api\SchoolController::class);
 });

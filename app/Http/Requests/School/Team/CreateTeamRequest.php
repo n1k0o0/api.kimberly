@@ -24,7 +24,6 @@ class CreateTeamRequest extends FormRequest
     public function rules()
     {
         return [
-            'school_id' => 'required|integer',
             'division_id' => 'required|integer',
             'color_id' => 'required|integer',
         ];

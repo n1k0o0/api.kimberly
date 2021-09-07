@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\School\CreateSchoolRequest;
 use App\Http\Requests\School\PaginateSchoolsRequest;
 use App\Http\Requests\School\UpdateSchoolRequest;
 use App\Http\Requests\School\UpdateSchoolStatusRequest;
@@ -35,20 +34,6 @@ class SchoolController extends ApiController
         );
 
         return SchoolResourceCollection::make($schools);
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param CreateSchoolRequest $request
-     *
-     * @return JsonResponse
-     */
-    public function store(CreateSchoolRequest $request): JsonResponse
-    {
-        $school = $this->schoolService->createSchool($request->validated());
-
-        return $this->respondCreated(SchoolResource::make($school));
     }
 
     /**

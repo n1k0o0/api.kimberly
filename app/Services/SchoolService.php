@@ -5,7 +5,9 @@ namespace App\Services;
 use App\Events\School\SchoolCreated;
 use App\Exceptions\BusinessLogicException;
 use App\Models\School;
+use App\Models\User;
 use App\Repositories\SchoolRepository;
+use App\Repositories\UserRepository;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -16,7 +18,8 @@ class SchoolService
      */
     public function __construct
     (
-        private SchoolRepository $schoolRepository
+        private SchoolRepository $schoolRepository,
+        private UserRepository $userRepository
     )
     {
     }
@@ -37,13 +40,19 @@ class SchoolService
     /**
      * @throws \Exception
      */
-    public function createSchool(array $data): Model
+    public function createSchool(int $userId, array $data): Model
     {
+        /** @var User $user */
+        $user = $this->userRepository->getById($userId);
+        if ($user->school()->exists()) {
+            throw new BusinessLogicException('Школа уже создана');
+        }
+
         $data['status'] = School::STATUS_MODERATION;
         try {
             DB::beginTransaction();
             /** @var School $school */
-            $school = School::query()->create($data);
+            $school = $user->school()->create($data);
             if (isset($data['avatar'])) {
                 $school->addMedia($data['avatar'])->toMediaCollection(School::AVATAR_MEDIA_COLLECTION);
                 $school->loadMissing('media_avatar');
@@ -54,6 +63,10 @@ class SchoolService
             if (isset($data['coaches'])) {
                 $school->coaches()->createMany($data['coaches']);
             }
+            if (isset($data['social_links'])) {
+                $school->coaches()->createMany($data['social_links']);
+            }
+
             DB::commit();
             event(new SchoolCreated($school));
         } catch (\Exception $exception) {
@@ -131,6 +144,43 @@ class SchoolService
         $school->update([
             'status' => $status,
         ]);
+
+        return $school;
+    }
+
+    /**
+     * @param int $userId
+     * @param array $data
+     *
+     * @return School|Model
+     * @throws BusinessLogicException
+     */
+    public function updateSchoolByUserId(int $userId, array $data): School|Model
+    {
+        /** @var User $user */
+        $user = $this->userRepository->getById($userId);
+        /** @var School $school */
+        if (!$school = $user->school()->first()) {
+            throw new BusinessLogicException('Школа еще не создана');
+        }
+
+        try {
+            DB::beginTransaction();
+            $school->update($data);
+            if (isset($data['teams'])) {
+                $school->teams()->updateOrInsert($data['teams']);
+            }
+            if (isset($data['coaches'])) {
+                $school->coaches()->updateOrInsert($data['coaches']);
+            }
+            if (isset($data['social_links'])) {
+                $school->social_links()->updateOrInsert($data['social_links']);
+            }
+            DB::commit();
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            throw $exception;
+        }
 
         return $school;
     }

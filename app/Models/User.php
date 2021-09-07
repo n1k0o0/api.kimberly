@@ -8,9 +8,11 @@ use App\Support\Media\InteractsWithMedia;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\HasApiTokens;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
@@ -74,9 +76,20 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
 
+    /**
+     * @return MorphOne
+     */
     public function avatar(): MorphOne
     {
         return $this->mediaItem()->where('collection_name', self::AVATAR_MEDIA_COLLECTION);
+    }
+
+    /**
+     * @return HasOne
+     */
+    public function school(): HasOne
+    {
+        return $this->hasOne(School::class);
     }
 
     /**
@@ -97,6 +110,18 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
     public function passwordRecoveries(): HasMany
     {
         return $this->hasMany(PasswordRecovery::class);
+    }
+
+    /**
+     * Set password with encrypt
+     *
+     * @param string|null $value
+     */
+    public function setPasswordAttribute(?string $value): void
+    {
+        if (!is_null($value)) {
+            $this->attributes['password'] = Hash::make($value);
+        }
     }
 
     /**

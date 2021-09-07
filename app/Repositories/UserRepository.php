@@ -14,7 +14,9 @@ class UserRepository
      */
     public function getById(int $userId): ?Model
     {
-        return User::query()->find($userId);
+        return User::query()
+            ->with('school')
+            ->find($userId);
     }
 
     /**

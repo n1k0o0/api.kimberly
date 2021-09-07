@@ -49,7 +49,7 @@ class VerifyEmail extends Notification
         return (new MailMessage)
             ->subject('Kimberly - завершение регистрации')
             ->greeting('Уважаемый(ая) ' . $this->emailVerify->user->first_name)
-            ->line('Для завершения регистрации на портале Kimberly введите в форме регистрации проверочный код: ' . $this->emailVerify->verification_code)
+            ->line('Для завершения регистрации в приложении Kimberly введите на форме регистрации проверочный код: ' . $this->emailVerify->verification_code)
             ->salutation('С уважением, команда Kimberly');
     }
 

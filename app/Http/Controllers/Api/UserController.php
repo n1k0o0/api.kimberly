@@ -48,7 +48,7 @@ class UserController extends ApiController
     public function issueToken(LoginUserRequest $request): JsonResponse
     {
         $credentials = $request->only('email', 'password');
-        if (! $token = auth('users')->attempt($credentials)) {
+        if (!$token = auth('users')->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
@@ -88,7 +88,9 @@ class UserController extends ApiController
      */
     public function getMe(): JsonResponse
     {
-        return $this->respondSuccess(UserResource::make(auth('users')->user()));
+        $user = $this->userService->getUserById(auth('users')->id());
+
+        return $this->respondSuccess(UserResource::make($user));
     }
 
     /**
