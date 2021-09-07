@@ -29,10 +29,22 @@ class CreateSchoolRequest extends FormRequest
             'description' => 'sometimes|string|nullable',
             'email' => 'required|email|nullable',
             'phone' => 'sometimes|nullable',
-            'avatar' => 'sometimes|nullable',
+            'avatar' => 'sometimes|image|nullable',
             'teams' => 'sometimes|array',
             'coaches' => 'sometimes|array',
             'user_id' => 'required|integer',
+            'teams.*' => [
+                'school_id' => 'required|integer',
+                'division_id' => 'required|integer',
+                'color_id' => 'required|integer',
+            ],
+            'coaches.*' => [
+                'school_id' => 'required|integer|exists:schools,id',
+                'first_name' => 'required|string',
+                'last_name' => 'required|string',
+                'patronymic' => 'sometimes|nullable|string',
+                'avatar' => 'sometimes|image|nullable',
+            ],
         ];
     }
 

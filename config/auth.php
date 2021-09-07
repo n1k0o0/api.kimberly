@@ -42,13 +42,13 @@ return [
         ],
 
         'users' => [
-            'driver' => 'sanctum',
+            'driver' => 'jwt',
             'provider' => 'users',
             'hash' => false,
         ],
 
         'internal-users' => [
-            'driver' => 'sanctum',
+            'driver' => 'jwt',
             'provider' => 'internal-users',
             'hash' => false,
         ],
