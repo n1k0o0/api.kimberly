@@ -2,10 +2,13 @@
 
 namespace App\Services;
 
+use App\Events\User\Registered;
 use App\Exceptions\BusinessLogicException;
+use App\Models\EmailVerification;
 use App\Models\User;
 use App\Repositories\UserRepository;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class UserService
 {
@@ -73,8 +76,59 @@ class UserService
         return $user;
     }
 
-    public function registerUser(array $data)
+    /**
+     * @param array $data
+     *
+     * @return User
+     * @throws \Exception
+     */
+    public function registerUser(array $data): User
     {
-        $user = $this->createUser($data);
+        try {
+            DB::beginTransaction();
+            $user = $this->createUser($data);
+            event(new Registered($user));
+            DB::commit();
+        } catch (\Exception $exception) {
+            DB::rollback();
+            throw $exception;
+        }
+
+        return $user;
+    }
+
+    /**
+     * @param string $email
+     * @param string $code
+     */
+    public function confirmEmail(string $email, string $code)
+    {
+        /** @var EmailVerification $verification */
+        $verification = EmailVerification::query()
+            ->where('email', $email)
+            ->whereNotNull('sent_at')
+            ->whereNull('verified_at')
+            ->orderBy('sent_at', 'desc')
+            ->first();
+
+        if ($verification && $verification->verification_code === $code) {
+            $verification->markAsVerified();
+
+            /** @var User $user */
+            $user = $verification->user;
+            $user->markEmailAsVerified();
+
+            if ($user->email !== $verification->email) {
+                $user->email = $verification->email;
+            }
+
+            if ($user->status === User::STATUS_EMAIL_VERIFICATION) {
+                $user->status = User::STATUS_NOT_APPROVED;
+            }
+
+            if ($user->isDirty()) {
+                $user->save();
+            }
+        }
     }
 }

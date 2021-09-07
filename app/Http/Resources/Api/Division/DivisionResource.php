@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Resources\User;
+namespace App\Http\Resources\Division;
 
+use App\Http\Resources\League\LeagueResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class UserResource extends JsonResource
+class DivisionResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,7 +17,9 @@ class UserResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'email' => $this->email,
+            'name' => $this->name,
+            'league_id' => $this->league_id,
+            'league' => LeagueResource::make($this->whenLoaded('league')),
         ];
     }
 }

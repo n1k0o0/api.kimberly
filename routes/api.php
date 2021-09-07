@@ -13,9 +13,6 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::group(['prefix' => 'auth', 'namespace' => 'Auth'], function () {
-    Route::post("me", '\App\Http\Controllers\Auth\MeController')->middleware(["auth:sanctum"]);
-});
 Route::prefix('internal_users')->group(function () {
     Route::post('/issue-token', [\App\Http\Controllers\Admin\AuthInternalUserController::class, 'issueToken']);
 });
@@ -23,7 +20,6 @@ Route::middleware(['auth:internal-users'])->group(function () {
     Route::prefix('internal_users')->group(function () {
 //        Route::post('/refresh-token', [\App\Http\Controllers\Admin\AuthInternalUserController::class, 'refreshToken']);
         Route::post('/revoke-token', [\App\Http\Controllers\Admin\AuthInternalUserController::class, 'revokeToken']);
-        Route::post("me", '\App\Http\Controllers\Auth\MeController');
     });
     Route::apiResource('internal_users',\App\Http\Controllers\Admin\InternalUserController::class);
 
@@ -67,12 +63,14 @@ Route::middleware(['auth:internal-users'])->group(function () {
 });
 
 Route::prefix('users')->group(function () {
-    Route::post('/issue-token', [\App\Http\Controllers\AuthUserController::class, 'issueToken']);
+    Route::post('issue-token', [\App\Http\Controllers\Api\UserController::class, 'issueToken']);
+    Route::post('register', [\App\Http\Controllers\Api\UserController::class, 'register']);
+    Route::post('email/confirm', [\App\Http\Controllers\Api\UserController::class, 'confirmEmail']);
 });
 Route::middleware(['auth:users'])->group(function () {
-    Route::prefix('/users')->group(function () {
+    Route::prefix('users')->group(function () {
+        Route::post('revoke-token', [\App\Http\Controllers\Api\UserController::class, 'revokeToken']);
 //        Route::post('/refresh-token', [\App\Http\Controllers\AuthUserController::class, 'refreshToken']);
-        Route::post('/revoke-token', [\App\Http\Controllers\AuthUserController::class, 'revokeToken']);
     });
-    Route::apiResource('users',\App\Http\Controllers\UserController::class);
+    Route::apiResource('users',\App\Http\Controllers\Api\UserController::class);
 });
