@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Events\User\Registered;
 use App\Exceptions\BusinessLogicException;
 use App\Models\EmailVerification;
+use App\Models\PasswordRecovery;
 use App\Models\User;
 use App\Repositories\UserRepository;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -157,5 +158,53 @@ class UserService
         $users = $this->userRepository->getUsers($data, $limit);
 
         return $users;
+    }
+
+    /**
+     * @param array $data
+     *
+     */
+    public function recoverPassword(array $data)
+    {
+        /** @var User $user */
+        $user = User::query()->where('email', $data['email'])->firstOrFail();
+        /** @var PasswordRecovery $passwordRecovery */
+        try {
+            DB::beginTransaction();
+            $passwordRecovery = $user->passwordRecoveries()->create([
+                'user_id' => $user->id,
+                'verification_code' => rand(1000, 9999),
+            ]);
+
+            $user->notifyByPasswordRecovery($passwordRecovery);
+
+            $passwordRecovery->sent_at = now();
+            $passwordRecovery->save();
+            DB::commit();
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            throw $exception;
+        }
+    }
+
+    /**
+     * @param array $data
+     *
+     */
+    public function updatePassword(array $data)
+    {
+        /** @var PasswordRecovery $recovery */
+        $recovery = PasswordRecovery::query()
+            ->where('verification_code', $data['code'])
+            ->whereNotNull('sent_at')
+            ->whereNull('recovered_at')
+            ->orderBy('sent_at', 'desc')
+            ->firstOrFail();
+
+        $recovery->markAsRecovered();
+
+        $user = $recovery->user;
+        $user->password = $data['new_password'];
+        $user->save();
     }
 }

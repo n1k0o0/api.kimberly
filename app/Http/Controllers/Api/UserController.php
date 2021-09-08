@@ -57,6 +57,9 @@ class UserController extends ApiController
         return $this->respondWithToken($token);
     }
 
+    /**
+     * @return JsonResponse
+     */
     public function refreshToken(): JsonResponse
     {
         return $this->respondWithToken(auth()->refresh());
@@ -107,13 +110,27 @@ class UserController extends ApiController
         return $this->respondSuccess();
     }
 
-    public function recoverPassword(RecoverPasswordRequest $request)
+    /**
+     * @param RecoverPasswordRequest $request
+     *
+     * @return JsonResponse
+     */
+    public function recoverPassword(RecoverPasswordRequest $request): JsonResponse
     {
         $this->userService->recoverPassword($request->validated());
+
+        return $this->respondAccepted();
     }
 
-    public function updatePassword(UpdatePasswordRequest $request)
+    /**
+     * @param UpdatePasswordRequest $request
+     *
+     * @return JsonResponse
+     */
+    public function updatePassword(UpdatePasswordRequest $request): JsonResponse
     {
         $this->userService->updatePassword($request->validated());
+
+        return $this->respondSuccess();
     }
 }

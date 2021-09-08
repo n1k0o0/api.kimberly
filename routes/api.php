@@ -65,9 +65,12 @@ Route::middleware(['auth:users'])->group(function () {
     Route::prefix('users')->group(function () {
         Route::post('revoke-token', [\App\Http\Controllers\Api\UserController::class, 'revokeToken']);
         Route::post('me', [\App\Http\Controllers\Api\UserController::class, 'getMe']);
+        Route::prefix('password')->group(function () {
+            Route::post('recover', [\App\Http\Controllers\Api\UserController::class, 'recoverPassword']);
+            Route::put('/', [\App\Http\Controllers\Api\UserController::class, 'updatePassword']);
+        });
     });
     Route::apiResource('users', \App\Http\Controllers\Api\UserController::class);
-
     Route::put('schools', [\App\Http\Controllers\Api\SchoolController::class, 'updateSchool']);
     Route::apiResource('schools', \App\Http\Controllers\Api\SchoolController::class);
 });
