@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\Api\User\ConfirmEmailRequest;
 use App\Http\Requests\Api\User\LoginUserRequest;
+use App\Http\Requests\Api\User\RecoverPasswordRequest;
 use App\Http\Requests\Api\User\RegisterUserRequest;
+use App\Http\Requests\Api\User\UpdatePasswordRequest;
 use App\Http\Requests\Api\User\UpdateUserRequest;
 use App\Http\Resources\User\UserResource;
 use App\Services\UserService;
@@ -103,5 +105,15 @@ class UserController extends ApiController
         $this->userService->confirmEmail($request->input('email'), $request->input('code'));
 
         return $this->respondSuccess();
+    }
+
+    public function recoverPassword(RecoverPasswordRequest $request)
+    {
+        $this->userService->recoverPassword($request->validated());
+    }
+
+    public function updatePassword(UpdatePasswordRequest $request)
+    {
+        $this->userService->updatePassword($request->validated());
     }
 }

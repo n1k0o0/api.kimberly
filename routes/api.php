@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,53 +12,61 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::prefix('internal_users')->group(function () {
-    Route::post('/issue-token', [\App\Http\Controllers\Admin\AuthInternalUserController::class, 'issueToken']);
-});
-Route::middleware(['auth:internal-users'])->group(function () {
+Route::prefix('dashboard')->group(function () {
     Route::prefix('internal_users')->group(function () {
-        Route::post('revoke-token', [\App\Http\Controllers\Admin\AuthInternalUserController::class, 'revokeToken']);
-        Route::post('me', [\App\Http\Controllers\Admin\AuthInternalUserController::class, 'getMe']);
+        Route::post('/issue-token', [\App\Http\Controllers\Dashboard\AuthInternalUserController::class, 'issueToken']);
     });
-    Route::apiResource('internal_users',\App\Http\Controllers\Admin\InternalUserController::class);
-
-    Route::prefix('countries')->group(function () {});
-    Route::apiResource('countries', \App\Http\Controllers\Admin\CountryController::class);
-
-    Route::prefix('cities')->group(function () {});
-    Route::apiResource('cities', \App\Http\Controllers\Admin\CityController::class);
-
-    Route::prefix('stadiums')->group(function () {});
-    Route::apiResource('stadiums', \App\Http\Controllers\Admin\StadiumController::class);
-
-    Route::apiResource('leagues', \App\Http\Controllers\Admin\LeagueController::class);
-
-    Route::apiResource('divisions', \App\Http\Controllers\Admin\DivisionController::class);
-
-    Route::prefix('tournaments')->group(function () {
-        Route::prefix('{id}')->group(function () {
-            Route::put('status', [\App\Http\Controllers\Admin\TournamentController::class, 'updateStatus']);
+    Route::middleware(['auth:internal-users'])->group(function () {
+        Route::prefix('internal_users')->group(function () {
+            Route::post('revoke-token', [\App\Http\Controllers\Dashboard\AuthInternalUserController::class, 'revokeToken']);
+            Route::post('me', [\App\Http\Controllers\Dashboard\AuthInternalUserController::class, 'getMe']);
         });
-        Route::get('/current', [\App\Http\Controllers\Admin\TournamentController::class, 'getCurrent']);
+        Route::apiResource('internal_users', \App\Http\Controllers\Dashboard\InternalUserController::class);
+
+        Route::prefix('countries')->group(function () {
+        });
+        Route::apiResource('countries', \App\Http\Controllers\Dashboard\CountryController::class);
+
+        Route::prefix('cities')->group(function () {
+        });
+        Route::apiResource('cities', \App\Http\Controllers\Dashboard\CityController::class);
+
+        Route::prefix('stadiums')->group(function () {
+        });
+        Route::apiResource('stadiums', \App\Http\Controllers\Dashboard\StadiumController::class);
+
+        Route::apiResource('leagues', \App\Http\Controllers\Dashboard\LeagueController::class);
+
+        Route::apiResource('divisions', \App\Http\Controllers\Dashboard\DivisionController::class);
+
+        Route::prefix('tournaments')->group(function () {
+            Route::prefix('{id}')->group(function () {
+                Route::put('status', [\App\Http\Controllers\Dashboard\TournamentController::class, 'updateStatus']);
+            });
+            Route::get('/current', [\App\Http\Controllers\Dashboard\TournamentController::class, 'getCurrent']);
+        });
+        Route::apiResource('tournaments', \App\Http\Controllers\Dashboard\TournamentController::class);
+
+        Route::prefix('schools')->group(function () {
+            Route::put('status', [\App\Http\Controllers\Dashboard\SchoolController::class, 'setStatus']);
+        });
+        Route::apiResource('schools', \App\Http\Controllers\Dashboard\SchoolController::class)->except('store');
+
+        Route::apiResource('teams', \App\Http\Controllers\Dashboard\TeamController::class);
+
+        Route::apiResource('coaches', \App\Http\Controllers\Dashboard\CoachController::class);
+
+        Route::apiResource('social-links', \App\Http\Controllers\Dashboard\SocialLinkController::class);
+
+        Route::prefix('/notifications')->group(function () {
+        });
+
+        Route::prefix('/tables')->group(function () {
+        });
+
+        Route::prefix('/calendar')->group(function () {
+        });
     });
-    Route::apiResource('tournaments', \App\Http\Controllers\Admin\TournamentController::class);
-
-    Route::prefix('schools')->group(function () {
-        Route::put('status', [\App\Http\Controllers\Admin\SchoolController::class, 'setStatus']);
-    });
-    Route::apiResource('schools', \App\Http\Controllers\Admin\SchoolController::class)->except('store');
-
-    Route::apiResource('teams', \App\Http\Controllers\Admin\TeamController::class);
-
-    Route::apiResource('coaches', \App\Http\Controllers\Admin\CoachController::class);
-
-    Route::apiResource('social-links', \App\Http\Controllers\Admin\SocialLinkController::class);
-
-    Route::prefix('/notifications')->group(function () {});
-
-    Route::prefix('/tables')->group(function () {});
-
-    Route::prefix('/calendar')->group(function () {});
 });
 
 Route::prefix('users')->group(function () {
@@ -72,7 +79,7 @@ Route::middleware(['auth:users'])->group(function () {
         Route::post('revoke-token', [\App\Http\Controllers\Api\UserController::class, 'revokeToken']);
         Route::post('me', [\App\Http\Controllers\Api\UserController::class, 'getMe']);
     });
-    Route::apiResource('users',\App\Http\Controllers\Api\UserController::class);
+    Route::apiResource('users', \App\Http\Controllers\Api\UserController::class);
 
     Route::put('schools', [\App\Http\Controllers\Api\SchoolController::class, 'updateSchool']);
     Route::apiResource('schools', \App\Http\Controllers\Api\SchoolController::class);

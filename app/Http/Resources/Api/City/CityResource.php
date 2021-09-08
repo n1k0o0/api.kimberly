@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Resources\City;
+namespace App\Http\Resources\Api\City;
 
 use App\Http\Resources\Country\CountryResource;
 use Illuminate\Http\Resources\Json\JsonResource;

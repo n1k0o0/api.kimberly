@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\ApiController;
-use App\Http\Requests\School\CreateSchoolRequest;
-use App\Http\Requests\School\UpdateSchoolRequest;
+use App\Http\Requests\Dashboard\School\CreateSchoolRequest; // TODO
+use App\Http\Requests\Dashboard\School\UpdateSchoolRequest; // TODO
 use App\Http\Resources\School\SchoolResource;
 use App\Services\SchoolService;
 use Illuminate\Http\JsonResponse;
