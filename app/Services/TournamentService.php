@@ -112,18 +112,26 @@ class TournamentService
      * @param string $status
      *
      * @return Model|Tournament
+     * @throws BusinessLogicException
      */
-    public function updateTournamentStatus(int $tournamentId, string $status): Model|Tournament
+    public function setStatus(int $tournamentId, string $status): Model|Tournament
     {
         $tournament = $this->tournamentRepository->getById($tournamentId);
+        if ($tournament->status === Tournament::STATUS_ARCHIVED) {
+            throw new BusinessLogicException('Статус не может быть изменен');
+        }
         if (in_array($status, [Tournament::STATUS_NOT_STARTED, Tournament::STATUS_CURRENT])) {
             $tournament->update([
                 'status' => $status,
             ]);
+            return $tournament;
         }
-        if ($tournament->status === Tournament::STATUS_ARCHIVED) {
+        if ($status === Tournament::STATUS_ARCHIVED) {
             try {
                 DB::beginTransaction();
+                $tournament->update([
+                    'status' => $status,
+                ]);
                 // TODO Добавить обработку матчей
                 DB::commit();
             } catch (\Exception) {

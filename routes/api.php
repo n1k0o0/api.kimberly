@@ -36,6 +36,11 @@ Route::prefix('dashboard')->group(function () {
             });
             Route::get('/current', [\App\Http\Controllers\Dashboard\TournamentController::class, 'getCurrent']);
         });
+        Route::prefix('tournaments')->group(function () {
+            Route::prefix('{id}')->group(function () {
+                Route::put('status', [\App\Http\Controllers\Dashboard\TournamentController::class, 'setStatus']);
+            });
+        });
         Route::apiResource('tournaments', \App\Http\Controllers\Dashboard\TournamentController::class);
         Route::prefix('schools')->group(function () {
             Route::prefix('{id}')->group(function () {

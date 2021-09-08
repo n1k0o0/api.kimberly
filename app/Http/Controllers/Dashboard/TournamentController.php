@@ -112,9 +112,9 @@ class TournamentController extends ApiController
      *
      * @return JsonResponse
      */
-    public function updateStatus(UpdateTournamentStatusRequest $request): JsonResponse
+    public function setStatus(UpdateTournamentStatusRequest $request): JsonResponse
     {
-        $tournament = $this->tournamentService->updateTournamentStatus(
+        $tournament = $this->tournamentService->setStatus(
             $request->input('id'),
             $request->input('status'),
         );
