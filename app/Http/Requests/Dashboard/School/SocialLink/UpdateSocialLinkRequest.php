@@ -24,8 +24,8 @@ class UpdateSocialLinkRequest extends FormRequest
     public function rules()
     {
         return [
-            'service' => 'string|nullable',
-            'link' => 'string|nullable|url',
+            'service' => 'string|nullable', // TODO определиться с сервисами (какие соц.сети)
+            'link' => 'string|url',
         ];
     }
 }

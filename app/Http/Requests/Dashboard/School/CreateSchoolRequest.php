@@ -32,7 +32,7 @@ class CreateSchoolRequest extends FormRequest
             'avatar' => 'sometimes|image|nullable',
             'teams' => 'sometimes|array',
             'coaches' => 'sometimes|array',
-            'user_id' => 'required|integer',
+            'user_id' => 'required|integer|exists:users,id',
             'teams.*' => [
                 'school_id' => 'required|integer',
                 'division_id' => 'required|integer',

@@ -142,9 +142,11 @@ class SchoolService
     public function setStatus(int $schoolId, string $status): Model|School|null
     {
         $school = $this->schoolRepository->getById($schoolId);
-        $school->update([
-            'status' => $status,
-        ]);
+        if ($school->status === School::STATUS_MODERATION && $status === School::STATUS_PUBLISHED) {
+            $school->update([
+                'status' => $status,
+            ]);
+        }
 
         return $school;
     }

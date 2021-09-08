@@ -22,8 +22,8 @@ class School extends Model implements HasMedia
 
     const AVATAR_MEDIA_COLLECTION = 'avatars';
 
-    const STATUS_MODERATION = 'MODERATION';
-    const STATUS_PUBLISHED = 'PUBLISHED';
+    const STATUS_MODERATION = 'moderation';
+    const STATUS_PUBLISHED = 'published';
     const STATUSES = [
         self::STATUS_MODERATION,
         self::STATUS_PUBLISHED,

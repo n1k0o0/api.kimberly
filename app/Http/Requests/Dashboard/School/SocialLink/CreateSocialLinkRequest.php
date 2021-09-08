@@ -24,8 +24,8 @@ class CreateSocialLinkRequest extends FormRequest
     public function rules()
     {
         return [
-            'school_id' => 'sometimes|integer',
-            'service' => 'required|string',
+            'school_id' => 'sometimes|integer|exists:schools,id',
+            'service' => 'required|string', // TODO определиться с сервисами (какие соц.сети)
             'link' => 'required|string|url',
         ];
     }

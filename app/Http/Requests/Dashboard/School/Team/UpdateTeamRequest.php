@@ -24,9 +24,9 @@ class UpdateTeamRequest extends FormRequest
     public function rules()
     {
         return [
-            'school_id' => 'sometimes|integer',
-            'division_id' => 'sometimes|integer',
-            'color_id' => 'sometimes|integer',
+            'school_id' => 'sometimes|integer|exists:schools,id',
+            'division_id' => 'sometimes|integer|exists:divisions,id',
+            'color_id' => 'sometimes|integer|exists:team_colors,id',
         ];
     }
 }

@@ -26,7 +26,7 @@ class UpdateSchoolStatusRequest extends FormRequest
     public function rules()
     {
         return [
-            'school_id' => 'required|int',
+            'school_id' => 'required|int|exists:schools,id',
             'status' => [
                 'required',
                 'string',
