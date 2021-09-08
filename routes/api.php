@@ -23,20 +23,14 @@ Route::prefix('dashboard')->group(function () {
         });
         Route::apiResource('internal_users', \App\Http\Controllers\Dashboard\InternalUserController::class);
 
-        Route::prefix('countries')->group(function () {
+        Route::prefix('users')->group(function () {
         });
+        Route::apiResource('users', \App\Http\Controllers\Dashboard\UserController::class)->only('index', 'show', 'update');
+
         Route::apiResource('countries', \App\Http\Controllers\Dashboard\CountryController::class);
-
-        Route::prefix('cities')->group(function () {
-        });
         Route::apiResource('cities', \App\Http\Controllers\Dashboard\CityController::class);
-
-        Route::prefix('stadiums')->group(function () {
-        });
         Route::apiResource('stadiums', \App\Http\Controllers\Dashboard\StadiumController::class);
-
         Route::apiResource('leagues', \App\Http\Controllers\Dashboard\LeagueController::class);
-
         Route::apiResource('divisions', \App\Http\Controllers\Dashboard\DivisionController::class);
 
         Route::prefix('tournaments')->group(function () {
@@ -58,13 +52,7 @@ Route::prefix('dashboard')->group(function () {
 
         Route::apiResource('social-links', \App\Http\Controllers\Dashboard\SocialLinkController::class);
 
-        Route::prefix('/notifications')->group(function () {
-        });
-
         Route::prefix('/tables')->group(function () {
-        });
-
-        Route::prefix('/calendar')->group(function () {
         });
     });
 });

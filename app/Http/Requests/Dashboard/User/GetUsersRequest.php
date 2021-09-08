@@ -26,6 +26,7 @@ class GetUsersRequest extends FormRequest
     public function rules()
     {
         return [
+            'limit' => 'sometimes|integer',
             'login' => 'sometimes|string',
             'created_at.start' => 'sometimes|datetime',
             'created_at.end' => 'sometimes|datetime',

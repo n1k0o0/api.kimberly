@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Repositories\SchoolRepository;
 use App\Repositories\UserRepository;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
@@ -28,9 +29,9 @@ class SchoolService
      * @param array $data
      * @param int $limit
      *
-     * @return LengthAwarePaginator
+     * @return Collection|LengthAwarePaginator
      */
-    public function getSchools(array $data = [], int $limit = null): LengthAwarePaginator
+    public function getSchools(array $data = [], int $limit = null): Collection|LengthAwarePaginator
     {
         $schools = $this->schoolRepository->getSchools($data, $limit);
 

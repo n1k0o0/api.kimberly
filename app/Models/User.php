@@ -13,12 +13,12 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
-use Laravel\Sanctum\HasApiTokens;
+use Spatie\MediaLibrary\HasMedia;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable implements JWTSubject, MustVerifyEmail
+class User extends Authenticatable implements JWTSubject, MustVerifyEmail, HasMedia
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasFactory, Notifiable;
     use InteractsWithMedia;
 
     const AVATAR_MEDIA_COLLECTION = 'avatars';
@@ -113,6 +113,18 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
     }
 
     /**
+     * @return string
+     */
+    public function getFullNameAttribute(): string
+    {
+        return implode(" ", [
+            $this->last_name ?? '',
+            $this->first_name ?? '',
+            $this->patronymic ?? '',
+        ]);
+    }
+
+    /**
      * Set password with encrypt
      *
      * @param string|null $value
@@ -158,5 +170,10 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
     public function getJWTCustomClaims(): array
     {
         return [];
+    }
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection(self::AVATAR_MEDIA_COLLECTION);
     }
 }

@@ -26,13 +26,18 @@ class UpdateUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'login' => 'required|string|min:5',
-            'password' => 'required|string|min:6',
-            'type' => [
-                'required',
-                'integer',
-                Rule::in(User::TYPES),
-            ]
+            'first_name' => 'sometimes|string',
+            'last_name' => 'sometimes|string',
+            'patronymic' => 'sometimes|nullable|string',
+            'phone' => 'sometimes|nullable|string',
+            'email' => 'sometimes|string|email',
+            'status' => [
+                'sometimes',
+                'string',
+                Rule::in(User::STATUSES),
+            ],
+            'avatar' => 'sometimes|image',
+            'password' => 'sometimes|string|min:6',
         ];
     }
 }

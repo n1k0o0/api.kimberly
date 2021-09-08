@@ -7,6 +7,8 @@ use App\Exceptions\BusinessLogicException;
 use App\Models\EmailVerification;
 use App\Models\User;
 use App\Repositories\UserRepository;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
@@ -40,9 +42,9 @@ class UserService
      *
      * @return Model|null
      */
-    public function getUserById(int $id): ?Model
+    public function getUserById(int $userId): ?Model
     {
-        return $this->userRepository->getById($id);
+        return $this->userRepository->getById($userId);
     }
 
     /**
@@ -67,11 +69,23 @@ class UserService
      */
     public function updateUser(int $id, array $data): Model
     {
+        /** @var User $user */
         $user = $this->userRepository->getById($id);
         if (!$user) {
             throw new BusinessLogicException();
         }
-        $user->update($data);
+        try {
+            DB::beginTransaction();
+            $user->update($data);
+            if (isset($data['avatar'])) {
+                $user->replaceMedia($data['avatar'], User::AVATAR_MEDIA_COLLECTION);
+            }
+            $user->refresh();
+            DB::commit();
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            throw $exception;
+        }
 
         return $user;
     }
@@ -130,5 +144,18 @@ class UserService
                 $user->save();
             }
         }
+    }
+
+    /**
+     * @param array $data
+     * @param int|null $limit
+     *
+     * @return Collection|LengthAwarePaginator
+     */
+    public function getUsers(array $data = [], int $limit = null): Collection|LengthAwarePaginator
+    {
+        $users = $this->userRepository->getUsers($data, $limit);
+
+        return $users;
     }
 }
