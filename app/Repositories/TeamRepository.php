@@ -12,7 +12,7 @@ class TeamRepository
      *
      * @return Model|Team|null
      */
-    public function getById(int $teamId): Model|Team|null
+    public function getTeamById(int $teamId): Model|Team|null
     {
         return Team::query()
             ->with('division', 'league', 'color')

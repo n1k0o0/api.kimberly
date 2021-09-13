@@ -42,6 +42,19 @@ Route::prefix('dashboard')->group(function () {
             });
         });
         Route::apiResource('tournaments', \App\Http\Controllers\Dashboard\TournamentController::class);
+        Route::prefix('games')->group(function () {
+            Route::prefix('{id}')->group(function () {
+                Route::prefix('status')->group(function () {
+                    Route::put('/', [\App\Http\Controllers\Dashboard\GameController::class, 'updateStatus']);
+                });
+                Route::prefix('pauses')->group(function () {
+                    Route::post('start', [\App\Http\Controllers\Dashboard\GameController::class, 'startPause']);
+                    Route::post('finish', [\App\Http\Controllers\Dashboard\GameController::class, 'finishPause']);
+                });
+            });
+        });
+        Route::apiResource('games', \App\Http\Controllers\Dashboard\GameController::class);
+
         Route::prefix('schools')->group(function () {
             Route::prefix('{id}')->group(function () {
                 Route::put('status', [\App\Http\Controllers\Dashboard\SchoolController::class, 'setStatus']);
@@ -51,8 +64,6 @@ Route::prefix('dashboard')->group(function () {
         Route::apiResource('teams', \App\Http\Controllers\Dashboard\TeamController::class);
         Route::apiResource('coaches', \App\Http\Controllers\Dashboard\CoachController::class);
         Route::apiResource('social-links', \App\Http\Controllers\Dashboard\SocialLinkController::class);
-        Route::prefix('/tables')->group(function () {
-        });
     });
 });
 
