@@ -173,7 +173,7 @@ class UserService
             DB::beginTransaction();
             $passwordRecovery = $user->passwordRecoveries()->create([
                 'user_id' => $user->id,
-                'verification_code' => rand(1000, 9999),
+                'verification_code' => create4DigitCode(),
             ]);
 
             $user->notifyByPasswordRecovery($passwordRecovery);

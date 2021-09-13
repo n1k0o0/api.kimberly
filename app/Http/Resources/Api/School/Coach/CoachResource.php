@@ -19,6 +19,7 @@ class CoachResource extends JsonResource
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
             'patronymic' => $this->patronymic,
+            'avatar' => CoachAvatarResource::make($this->whenLoaded('avatar'))
         ];
     }
 }

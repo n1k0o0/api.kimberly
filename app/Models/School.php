@@ -20,7 +20,7 @@ class School extends Model implements HasMedia
 
     protected $fillable = ['user_id', 'city_id', 'status', 'name', 'description', 'email', 'phone', 'branch_count'];
 
-    const AVATAR_MEDIA_COLLECTION = 'avatars';
+    const AVATAR_MEDIA_COLLECTION = 'avatar';
 
     const STATUS_MODERATION = 'moderation';
     const STATUS_PUBLISHED = 'published';
@@ -82,7 +82,7 @@ class School extends Model implements HasMedia
      */
     public function media_avatar(): MorphOne
     {
-        return $this->mediaItem()->where('collection_name', self::AVATAR_MEDIA_COLLECTION);
+        return $this->mediaImage()->where('collection_name', self::AVATAR_MEDIA_COLLECTION);
     }
 
     /**

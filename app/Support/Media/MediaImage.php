@@ -5,7 +5,7 @@ namespace App\Support\Media;
 use Illuminate\Support\Facades\Storage;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class ImageMedia extends Media
+class MediaImage extends Media
 {
     public const CONVERSION_TYPE_SMALL = 'small';
     public const CONVERSION_TYPE_MIDDLE = 'middle';

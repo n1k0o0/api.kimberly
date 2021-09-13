@@ -24,9 +24,9 @@ class CoachController extends ApiController
      */
     public function store(CreateCoachRequest $request): JsonResponse
     {
-        $team = $this->coachService->createCoach($request->validated());
+        $coach = $this->coachService->createCoach($request->validated());
 
-        return $this->respondCreated(CoachResource::make($team));
+        return $this->respondCreated(CoachResource::make($coach));
     }
 
     /**

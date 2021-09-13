@@ -12,9 +12,14 @@ trait InteractsWithMedia
 {
     use \Spatie\MediaLibrary\InteractsWithMedia;
 
-    public function mediaItem(): MorphOne
+    public function mediaFile(): MorphOne
     {
         return $this->morphOne(Media::class, 'model');
+    }
+
+    public function mediaImage(): MorphOne
+    {
+        return $this->morphOne(MediaImage::class, 'model');
     }
 
     /**

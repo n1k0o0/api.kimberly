@@ -28,6 +28,10 @@ class CreateCoachRequest extends FormRequest
             'first_name' => 'required|string',
             'last_name' => 'required|string',
             'patronymic' => 'sometimes|nullable|string',
+            'avatar' => [
+                'sometimes',
+                'image',
+            ],
         ];
     }
 }

@@ -18,7 +18,7 @@ class SchoolRepository
     public function getById(int $tournamentId): Model|School|null
     {
         return School::query()
-            ->with('city', 'country', 'coaches', 'teams', 'teams.division', 'teams.league', 'teams.color', 'social_links', 'media_avatar')
+            ->with('city', 'country', 'coaches', 'coaches.avatar', 'teams', 'teams.division', 'teams.league', 'teams.color', 'social_links', 'media_avatar')
             ->find($tournamentId);
     }
 
@@ -45,7 +45,6 @@ class SchoolRepository
             ->when(isset($data['city_ids']), fn(Builder $query) => $query->whereIn('city_id', $data['city_ids']))
             ->when(isset($data['city_id']), fn (Builder $query) => $query->where('city_id', $data['city_id']))
             ->with('city', 'country');
-
 
         if ($limit) {
             return $query->latest()->paginate($limit);

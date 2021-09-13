@@ -21,7 +21,7 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail, HasMe
     use HasFactory, Notifiable;
     use InteractsWithMedia;
 
-    const AVATAR_MEDIA_COLLECTION = 'avatars';
+    const AVATAR_MEDIA_COLLECTION = 'avatar';
 
     const STATUS_EMAIL_VERIFICATION = 'email_verification';
     const STATUS_APPROVED = 'approved';
@@ -81,7 +81,7 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail, HasMe
      */
     public function avatar(): MorphOne
     {
-        return $this->mediaItem()->where('collection_name', self::AVATAR_MEDIA_COLLECTION);
+        return $this->mediaImage()->where('collection_name', self::AVATAR_MEDIA_COLLECTION);
     }
 
     /**

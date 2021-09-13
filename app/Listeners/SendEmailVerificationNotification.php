@@ -21,7 +21,7 @@ class SendEmailVerificationNotification
             $emailVerification = $event->user->emailVerifications()->create([
                 'user_id' => $event->user->id,
                 'email' => $event->user->email,
-                'verification_code' => rand(1000, 9999),
+                'verification_code' => create4DigitCode(),
             ]);
 
             $event->user->notifyByEmailVerification($emailVerification);

@@ -27,6 +27,10 @@ class UpdateCoachRequest extends FormRequest
             'first_name' => 'sometimes|string',
             'last_name' => 'sometimes|string',
             'patronymic' => 'sometimes|string|nullable',
+            'avatar' => [
+                'sometimes',
+                'image',
+            ]
         ];
     }
 }
