@@ -34,12 +34,12 @@ class Game extends Model
 
     public function firstTeam(): belongsTo
     {
-        return $this->belongsTo(Team::class, 'id', 'team_1_id');
+        return $this->belongsTo(Team::class, 'team_1_id');
     }
 
     public function secondTeam(): BelongsTo
     {
-        return $this->belongsTo(Team::class, 'team_2', 'team_2_id');
+        return $this->belongsTo(Team::class, 'team_2_id');
     }
 
     public function division(): BelongsTo

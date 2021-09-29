@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Stadium;
 use App\Repositories\StadiumRepository;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 class StadiumService
@@ -18,15 +19,13 @@ class StadiumService
 
     /**
      * @param array $data
-     * @param int $limit
+     * @param int|null $limit
      *
-     * @return LengthAwarePaginator
+     * @return Collection|LengthAwarePaginator
      */
-    public function paginateStadiums(array $data=[], int $limit=10): LengthAwarePaginator
+    public function getStadiums(array $data=[], int $limit=null): Collection|LengthAwarePaginator
     {
-        $stadiums = $this->stadiumRepository->paginateStadiums($limit, $data);
-
-        return $stadiums;
+        return $this->stadiumRepository->getStadiums( $data,$limit);
     }
 
     /**
@@ -36,9 +35,7 @@ class StadiumService
      */
     public function createStadium(array $data): Stadium|Model
     {
-        $stadium = Stadium::query()->create($data);
-
-        return $stadium;
+        return Stadium::query()->create($data);
     }
 
     /**
@@ -48,9 +45,7 @@ class StadiumService
      */
     public function getStadiumById(int $stadiumId): Model|Stadium|null
     {
-        $stadium = $this->stadiumRepository->getById($stadiumId);
-
-        return $stadium;
+        return $this->stadiumRepository->getById($stadiumId);
     }
 
     /**

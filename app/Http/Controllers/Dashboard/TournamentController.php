@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\Dashboard\Tournament\CreateTournamentRequest;
 use App\Http\Requests\Dashboard\Tournament\GetCurrentTournamentRequest;
+use App\Http\Requests\Dashboard\Tournament\GetTournamentsRequest;
 use App\Http\Requests\Dashboard\Tournament\PaginateTournamentRequest;
 use App\Http\Requests\Dashboard\Tournament\UpdateTournamentRequest;
 use App\Http\Requests\Dashboard\Tournament\UpdateTournamentStatusRequest;
@@ -25,15 +26,15 @@ class TournamentController extends ApiController
     /**
      * Display a listing of the resource.
      *
-     * @param PaginateTournamentRequest $request
+     * @param GetTournamentsRequest $request
      *
      * @return AnonymousResourceCollection
      */
-    public function index(PaginateTournamentRequest $request): AnonymousResourceCollection
+    public function index(GetTournamentsRequest $request): AnonymousResourceCollection
     {
-        $tournaments = $this->tournamentService->paginateTournaments(
+        $tournaments = $this->tournamentService->getTournaments(
             $request->validated(),
-            $request->input('limit') ?? 10
+            $request->input('limit')
         );
         return TournamentResource::collection($tournaments);
     }

@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\ApiController;
-use App\Http\Requests\Division\CreateDivisionRequest;
-use App\Http\Requests\Division\UpdateDivisionRequest;
-use App\Http\Resources\Division\DivisionResource;
+use App\Http\Requests\Dashboard\Division\CreateDivisionRequest;
+use App\Http\Requests\Dashboard\Division\UpdateDivisionRequest;
+use App\Http\Resources\Dashboard\Division\DivisionResource;
 use App\Services\DivisionService;
 use Illuminate\Http\JsonResponse;
 

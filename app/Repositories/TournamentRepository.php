@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Models\Tournament;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 class TournamentRepository
@@ -22,14 +23,14 @@ class TournamentRepository
     }
 
     /**
-     * @param int $limit
      * @param array $data
      *
-     * @return LengthAwarePaginator
+     * @param int|null $limit
+     * @return Collection|LengthAwarePaginator
      */
-    public function paginateTournaments(int $limit=10, array $data=[]): LengthAwarePaginator
+    public function getTournaments( array $data=[] ,int $limit=null): Collection|LengthAwarePaginator
     {
-        return Tournament::query()
+        $query = Tournament::query()
             ->when(isset($data['country_ids']),
                 fn (Builder $query) =>  $query->whereHas(
                     'country',
@@ -38,8 +39,12 @@ class TournamentRepository
             )
             ->when(isset($data['city_ids']), fn (Builder $query) => $query->whereIn('city_id', $data['city_ids']))
             ->when(isset($data['city_id']), fn (Builder $query) => $query->where('city_id', $data['city_id']))
-            ->with('city', 'country')
-            ->paginate($limit);
+            ->with('city', 'country');
+
+            if ($limit) {
+                return $query->latest()->paginate($limit);
+            }
+        return $query->get();
     }
 
     /**

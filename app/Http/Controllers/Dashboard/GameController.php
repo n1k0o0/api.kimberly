@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Exceptions\BusinessLogicException;
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\Dashboard\Game\CreateGameRequest;
 use App\Http\Requests\Dashboard\Game\GetGamesRequest;
@@ -10,6 +11,7 @@ use App\Http\Requests\Dashboard\Game\UpdateGameStatusRequest;
 use App\Http\Resources\Dashboard\Game\GameResource;
 use App\Services\GameService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class GameController extends ApiController
 {
@@ -22,16 +24,17 @@ class GameController extends ApiController
      *
      * @param GetGamesRequest $request
      *
-     * @return GameResource
+     * @return AnonymousResourceCollection
      */
-    public function index(GetGamesRequest $request): GameResource
+    public function index(GetGamesRequest $request): AnonymousResourceCollection
     {
+        //Todo $request->all() change to$request->validated()
         $games = $this->gameService->getGames(
-            $request->validated(),
+            $request->all(),
             $request->input('limit'),
         );
 
-        return new GameResource($games);
+        return GameResource::collection($games);
     }
 
     /**
@@ -86,6 +89,7 @@ class GameController extends ApiController
      * @param int $id
      *
      * @return JsonResponse
+     * @throws BusinessLogicException
      */
     public function destroy(int $id): JsonResponse
     {
@@ -94,7 +98,7 @@ class GameController extends ApiController
         return $this->respondSuccess();
     }
 
-    public function updateStatus(UpdateGameStatusRequest $request, int $id)
+    public function updateStatus(UpdateGameStatusRequest $request, int $id): JsonResponse
     {
         $this->gameService->updateStatus($id, $request->input('status'));
 

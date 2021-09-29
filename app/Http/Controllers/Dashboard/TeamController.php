@@ -4,15 +4,28 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\Dashboard\School\Team\CreateTeamRequest;
+use App\Http\Requests\Dashboard\School\Team\GetTeamsRequest;
 use App\Http\Requests\Dashboard\School\Team\UpdateTeamRequest;
-use App\Http\Resources\Team\TeamResource;
+use App\Http\Resources\Dashboard\Team\TeamResource;
 use App\Services\TeamService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class TeamController extends ApiController
 {
     public function __construct(private TeamService $teamService)
     {
+    }
+
+    public function index(GetTeamsRequest $request): AnonymousResourceCollection
+    {
+        //Todo $request->all() change to$request->validated()
+        $teams = $this->teamService->getTeams(
+            $request->all(),
+            $request->input('limit'),
+        );
+
+        return TeamResource::collection($teams);
     }
 
     /**

@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Models\Team;
+use App\Repositories\TeamRepository;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
@@ -11,6 +13,21 @@ use Illuminate\Database\Eloquent\Model;
  */
 class TeamService
 {
+
+    public function __construct(private TeamRepository $teamRepository)
+    {
+    }
+
+    /**
+     * @param array $data
+     * @param int|null $limit
+     * @return Collection|LengthAwarePaginator
+     */
+    public function getTeams(array $data = [], int $limit = null): Collection|LengthAwarePaginator
+    {
+        return $this->teamRepository->getTeams($data, $limit);
+    }
+
     /**
      * @param array $data
      *

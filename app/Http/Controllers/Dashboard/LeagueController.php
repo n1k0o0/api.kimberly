@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\Dashboard\League\CreateLeagueRequest;
-use App\Http\Requests\Dashboard\League\PaginateLeagueRequest;
+use App\Http\Requests\Dashboard\League\GetLeaguesRequest;
 use App\Http\Requests\Dashboard\League\UpdateLeagueRequest;
 use App\Http\Resources\League\LeagueResource;
 use App\Services\LeagueService;
@@ -23,11 +23,11 @@ class LeagueController extends ApiController
     /**
      * Display a listing of the resource.
      *
-     * @param PaginateLeagueRequest $request
+     * @param GetLeaguesRequest $request
      *
      * @return AnonymousResourceCollection
      */
-    public function index(PaginateLeagueRequest $request): AnonymousResourceCollection
+    public function index(GetLeaguesRequest $request): AnonymousResourceCollection
     {
         $leagues = $this->leagueService->getLeagues(
             $request->validated(),

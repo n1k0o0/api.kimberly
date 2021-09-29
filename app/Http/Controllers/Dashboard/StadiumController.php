@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\Dashboard\Stadium\CreateStadiumRequest;
-use App\Http\Requests\Dashboard\Stadium\PaginateStadiumRequest;
+use App\Http\Requests\Dashboard\Stadium\GetStadiumRequest;
 use App\Http\Requests\Dashboard\Stadium\UpdateStadiumRequest;
 use App\Http\Resources\Stadium\StadiumResource;
 use App\Services\StadiumService;
@@ -20,13 +20,13 @@ class StadiumController extends ApiController
     /**
      * Display a listing of the resource.
      *
-     * @param PaginateStadiumRequest $request
+     * @param GetStadiumRequest $request
      *
      * @return AnonymousResourceCollection
      */
-    public function index(PaginateStadiumRequest $request): AnonymousResourceCollection
+    public function index(GetStadiumRequest $request): AnonymousResourceCollection
     {
-        $stadiums = $this->stadiumService->paginateStadiums(
+        $stadiums = $this->stadiumService->getStadiums(
             $request->validated(),
             $request->input('limit'),
         );

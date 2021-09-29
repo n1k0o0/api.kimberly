@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Dashboard\Stadium;
+namespace App\Http\Requests\Dashboard\League;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class PaginateStadiumRequest extends FormRequest
+class GetLeaguesRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +24,10 @@ class PaginateStadiumRequest extends FormRequest
     public function rules()
     {
         return [
-            'limit' => 'required|integer',
+            'limit' => 'sometimes|integer|nullable',
             'country_ids' => 'sometimes|array',
+            'country_id' => 'sometimes|integer',
+            'city_ids' => 'sometimes|array',
             'city_id' => 'sometimes|integer',
         ];
     }

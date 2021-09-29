@@ -27,4 +27,9 @@ class Team extends Model
     {
         return $this->belongsTo(TeamColor::class);
     }
+
+    public function school(): BelongsTo
+    {
+        return $this->belongsTo(School::class);
+    }
 }

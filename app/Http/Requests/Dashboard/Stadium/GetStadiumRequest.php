@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Dashboard\Game;
+namespace App\Http\Requests\Dashboard\Stadium;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class GetGamesRequest extends FormRequest
+class GetStadiumRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,9 @@ class GetGamesRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'limit' => 'nullable|integer',
+            'country_ids' => 'sometimes|array',
+            'city_id' => 'sometimes|integer',
         ];
     }
 }

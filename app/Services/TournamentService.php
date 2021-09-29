@@ -7,6 +7,7 @@ use App\Exceptions\BusinessLogicException;
 use App\Models\Tournament;
 use App\Repositories\TournamentRepository;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
@@ -24,15 +25,13 @@ class TournamentService
 
     /**
      * @param array $data
-     * @param int $limit
+     * @param int|null $limit
      *
-     * @return LengthAwarePaginator
+     * @return Collection|LengthAwarePaginator
      */
-    public function paginateTournaments(array $data = [], int $limit = 10): LengthAwarePaginator
+    public function getTournaments(array $data = [], int $limit = null): Collection|LengthAwarePaginator
     {
-        $tournaments = $this->tournamentRepository->paginateTournaments($limit, $data);
-
-        return $tournaments;
+        return $this->tournamentRepository->getTournaments($data,$limit);
     }
 
     /**

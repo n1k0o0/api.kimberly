@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Division;
+namespace App\Http\Requests\Dashboard\Division;
 
 use Illuminate\Foundation\Http\FormRequest;
 

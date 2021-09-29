@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Dashboard\Game;
+namespace App\Http\Requests\Dashboard\School\Team;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class GetGamesRequest extends FormRequest
+class GetTeamsRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

@@ -4,6 +4,7 @@ namespace App\Http\Resources\Dashboard\Team;
 
 use App\Http\Resources\Dashboard\Division\DivisionResource;
 use App\Http\Resources\Dashboard\League\LeagueResource;
+use App\Http\Resources\Dashboard\School\SchoolResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class TeamResource extends JsonResource
@@ -24,6 +25,8 @@ class TeamResource extends JsonResource
             'color' => ColorResource::make($this->whenLoaded('color')),
             'league_id' => $this->when($this->relationLoaded('league'), optional($this->league)->id),
             'league' => LeagueResource::make($this->whenLoaded('league')),
+            'school' => SchoolResource::make($this->whenLoaded('school')),
+            'name' => $this->school->name . ' ' . $this->color->color
         ];
     }
 }

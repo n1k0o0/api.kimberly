@@ -33,9 +33,7 @@ class GameService
      */
     public function getGames(array $data = [], int $limit = null): Collection|LengthAwarePaginator
     {
-        $games = $this->gameRepository->getGames($data, $limit);
-
-        return $games;
+        return $this->gameRepository->getGames($data, $limit);
     }
 
     /**
@@ -123,7 +121,7 @@ class GameService
      *
      * @throws BusinessLogicException
      */
-    public function removeGame(int $gameId)
+    public function removeGame(int $gameId): void
     {
         /** @var Game $game */
         $game = Game::query()->findOrFail($gameId);
