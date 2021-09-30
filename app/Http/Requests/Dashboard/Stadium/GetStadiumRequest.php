@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests\Dashboard\Stadium;
 
+use App\Models\City;
+use App\Models\Country;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class GetStadiumRequest extends FormRequest
 {
@@ -11,7 +14,7 @@ class GetStadiumRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -24,9 +27,10 @@ class GetStadiumRequest extends FormRequest
     public function rules()
     {
         return [
-            'limit' => 'nullable|integer',
-            'country_ids' => 'sometimes|array',
-            'city_id' => 'sometimes|integer',
+            'limit' => ['nullable', 'integer', 'max:250'],
+            'page' => ['nullable', 'integer', 'min:1'],
+            'country_id' => ['required', 'integer', Rule::exists(Country::class, 'id')],
+            'city_id' => ['required', 'integer', Rule::exists(City::class, 'id')],
         ];
     }
 }

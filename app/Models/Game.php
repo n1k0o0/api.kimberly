@@ -13,7 +13,17 @@ class Game extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['team_1', 'team_2', 'tournament_id', 'division_id', 'stadium_id', 'status', 'scheduled_start_at', 'started_at', 'finished_at'];
+    protected $fillable = [
+        'team_1',
+        'team_2',
+        'tournament_id',
+        'division_id',
+        'stadium_id',
+        'status',
+        'scheduled_start_at',
+        'started_at',
+        'finished_at'
+    ];
 
     public $timestamps = false;
 

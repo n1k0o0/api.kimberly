@@ -8,8 +8,11 @@ use App\Models\GamePause;
 use App\Repositories\GameRepository;
 use App\Repositories\TeamRepository;
 use Carbon\CarbonImmutable;
+use Exception;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
 class GameService
@@ -21,8 +24,7 @@ class GameService
     public function __construct(
         private GameRepository $gameRepository,
         private TeamRepository $teamRepository,
-    )
-    {
+    ) {
     }
 
     /**
@@ -57,7 +59,7 @@ class GameService
             /** @var Game $game */
             $game = Game::query()->create($data);
             DB::commit();
-        } catch (\Exception $exception) {
+        } catch (Exception) {
             DB::rollback();
         }
 
@@ -68,6 +70,7 @@ class GameService
      * @param array $data
      *
      * @return bool
+     * @throws Exception
      */
     public function createGames(array $data): bool
     {
@@ -75,7 +78,7 @@ class GameService
             DB::beginTransaction();
             $games = Game::query()->insert($data);
             DB::commit();
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             DB::rollback();
             throw $exception;
         }
@@ -90,9 +93,7 @@ class GameService
      */
     public function getGameById(int $gameId): Game
     {
-        $game = $this->gameRepository->getGameById($gameId);
-
-        return $game;
+        return $this->gameRepository->getGameById($gameId);
     }
 
     /**
@@ -109,7 +110,7 @@ class GameService
             DB::beginTransaction();
             $game->update($data);
             DB::commit();
-        } catch (\Exception $exception) {
+        } catch (Exception) {
             DB::rollback();
         }
 
@@ -183,6 +184,5 @@ class GameService
     public function updateStatus(int $gameId, string $status)
     {
         $game = Game::query()->findOrFail($gameId);
-
     }
 }

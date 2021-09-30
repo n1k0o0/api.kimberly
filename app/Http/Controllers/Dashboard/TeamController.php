@@ -19,9 +19,8 @@ class TeamController extends ApiController
 
     public function index(GetTeamsRequest $request): AnonymousResourceCollection
     {
-        //Todo $request->all() change to$request->validated()
         $teams = $this->teamService->getTeams(
-            $request->all(),
+            $request->validated(),
             $request->input('limit'),
         );
 

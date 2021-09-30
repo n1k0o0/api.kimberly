@@ -28,9 +28,8 @@ class GameController extends ApiController
      */
     public function index(GetGamesRequest $request): AnonymousResourceCollection
     {
-        //Todo $request->all() change to$request->validated()
         $games = $this->gameService->getGames(
-            $request->all(),
+            $request->validated(),
             $request->input('limit'),
         );
 
@@ -43,6 +42,7 @@ class GameController extends ApiController
      * @param CreateGameRequest $request
      *
      * @return JsonResponse
+     * @throws BusinessLogicException
      */
     public function store(CreateGameRequest $request): JsonResponse
     {
@@ -105,14 +105,20 @@ class GameController extends ApiController
         return $this->respondSuccess();
     }
 
-    public function startPause(int $id)
+    /**
+     * @throws BusinessLogicException
+     */
+    public function startPause(int $id): JsonResponse
     {
         $this->gameService->startGamePause($id);
 
         return $this->respondSuccess();
     }
 
-    public function finishPause(int $id)
+    /**
+     * @throws BusinessLogicException
+     */
+    public function finishPause(int $id): JsonResponse
     {
         $this->gameService->finishGamePause($id);
 

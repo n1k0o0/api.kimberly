@@ -2,7 +2,12 @@
 
 namespace App\Http\Requests\Dashboard\School\Team;
 
+use App\Models\City;
+use App\Models\Country;
+use App\Models\Division;
+use App\Models\League;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class GetTeamsRequest extends FormRequest
 {
@@ -11,7 +16,7 @@ class GetTeamsRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -24,7 +29,14 @@ class GetTeamsRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'limit' => ['nullable', 'integer', 'max:250'],
+            'page' => ['nullable', 'integer', 'min:1'],
+            'country_id' => ['required', 'integer', Rule::exists(Country::class, 'id')],
+            'city_id' => ['required', 'integer', Rule::exists(City::class, 'id')],
+            'leagues' => ['nullable', 'array'],
+            'leagues.*' => ['nullable', 'integer', Rule::exists(League::class, 'id')],
+            'divisions' => ['nullable', 'array'],
+            'divisions.*' => ['required', 'integer', Rule::exists(Division::class, 'id')],
         ];
     }
 }

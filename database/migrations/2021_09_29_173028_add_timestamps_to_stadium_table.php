@@ -26,7 +26,7 @@ class AddTimestampsToStadiumTable extends Migration
     public function down(): void
     {
         Schema::table('stadiums', function (Blueprint $table) {
-
+            $table->dropTimestamps();
         });
     }
 }

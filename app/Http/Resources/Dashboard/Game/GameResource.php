@@ -15,13 +15,13 @@ class GameResource extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @param  Request  $request
+     * @param Request $request
      * @return array
      */
     public function toArray($request)
     {
         return [
-            'id'=>$this->id,
+            'id' => $this->id,
             'team_1' => TeamResource::make($this->whenLoaded('firstTeam')),
             'team_2' => TeamResource::make($this->whenLoaded('secondTeam')),
             'division_id' => $this->division_id,

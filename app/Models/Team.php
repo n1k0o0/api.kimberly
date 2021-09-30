@@ -13,6 +13,8 @@ class Team extends Model
 
     protected $fillable = ['school_id', 'division_id', 'color_id'];
 
+    protected $with = ['school', 'color'];
+
     public function division(): BelongsTo
     {
         return $this->belongsTo(Division::class);

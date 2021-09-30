@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Exceptions\BusinessLogicException;
 use App\Http\Controllers\ApiController;
-use App\Http\Requests\Dashboard\School\CreateSchoolRequest; // TODO
-use App\Http\Requests\Dashboard\School\UpdateSchoolRequest; // TODO
+use App\Http\Requests\Dashboard\School\CreateSchoolRequest;
+use App\Http\Requests\Dashboard\School\UpdateSchoolRequest;
 use App\Http\Resources\School\SchoolResource;
 use App\Services\SchoolService;
+use Exception;
 use Illuminate\Http\JsonResponse;
 
 class SchoolController extends ApiController
@@ -24,6 +26,7 @@ class SchoolController extends ApiController
      * @param CreateSchoolRequest $request
      *
      * @return JsonResponse
+     * @throws Exception
      */
     public function store(CreateSchoolRequest $request): JsonResponse
     {
@@ -41,6 +44,7 @@ class SchoolController extends ApiController
      * @param UpdateSchoolRequest $request
      *
      * @return JsonResponse
+     * @throws BusinessLogicException
      */
     public function updateSchool(UpdateSchoolRequest $request): JsonResponse
     {
