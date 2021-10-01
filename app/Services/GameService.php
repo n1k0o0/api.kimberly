@@ -104,6 +104,7 @@ class GameService
      * @param array $data
      *
      * @return Game
+     * @throws Exception
      */
     public function updateGame(int $gameId, array $data): Game
     {
@@ -113,8 +114,9 @@ class GameService
             DB::beginTransaction();
             $game->update($data);
             DB::commit();
-        } catch (Exception) {
+        } catch (Exception $exception) {
             DB::rollback();
+            throw $exception;
         }
 
         return $game;

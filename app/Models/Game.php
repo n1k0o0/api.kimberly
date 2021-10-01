@@ -28,6 +28,12 @@ class Game extends Model
     public $timestamps = false;
 
     protected $casts = [
+        'id' => 'integer',
+        'team_1_id' => 'integer',
+        'team_2_id' => 'integer',
+        'tournament_id' => 'integer',
+        'division_id' => 'integer',
+        'stadium_id' => 'integer',
         'scheduled_start_at' => 'datetime',
         'started_at' => 'datetime',
         'finished_at' => 'datetime',

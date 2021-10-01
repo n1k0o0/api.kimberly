@@ -18,13 +18,20 @@ Route::prefix('dashboard')->group(function () {
     });
     Route::middleware(['auth:internal-users'])->group(function () {
         Route::prefix('internal_users')->group(function () {
-            Route::post('revoke-token', [\App\Http\Controllers\Dashboard\AuthInternalUserController::class, 'revokeToken']);
+            Route::post(
+                'revoke-token',
+                [\App\Http\Controllers\Dashboard\AuthInternalUserController::class, 'revokeToken']
+            );
             Route::post('me', [\App\Http\Controllers\Dashboard\AuthInternalUserController::class, 'getMe']);
         });
         Route::apiResource('internal_users', \App\Http\Controllers\Dashboard\InternalUserController::class);
         Route::prefix('users')->group(function () {
         });
-        Route::apiResource('users', \App\Http\Controllers\Dashboard\UserController::class)->only('index', 'show', 'update');
+        Route::apiResource('users', \App\Http\Controllers\Dashboard\UserController::class)->only(
+            'index',
+            'show',
+            'update'
+        );
         Route::apiResource('countries', \App\Http\Controllers\Dashboard\CountryController::class);
         Route::apiResource('cities', \App\Http\Controllers\Dashboard\CityController::class);
         Route::apiResource('stadiums', \App\Http\Controllers\Dashboard\StadiumController::class);
@@ -71,15 +78,15 @@ Route::prefix('users')->group(function () {
     Route::post('issue-token', [\App\Http\Controllers\Api\UserController::class, 'issueToken']);
     Route::post('register', [\App\Http\Controllers\Api\UserController::class, 'register']);
     Route::post('email/confirm', [\App\Http\Controllers\Api\UserController::class, 'confirmEmail']);
+    Route::prefix('password')->group(function () {
+        Route::post('recover', [\App\Http\Controllers\Api\UserController::class, 'recoverPassword']);
+        Route::put('/', [\App\Http\Controllers\Api\UserController::class, 'updatePassword']);
+    });
 });
 Route::middleware(['auth:users'])->group(function () {
     Route::prefix('users')->group(function () {
         Route::post('revoke-token', [\App\Http\Controllers\Api\UserController::class, 'revokeToken']);
         Route::post('me', [\App\Http\Controllers\Api\UserController::class, 'getMe']);
-        Route::prefix('password')->group(function () {
-            Route::post('recover', [\App\Http\Controllers\Api\UserController::class, 'recoverPassword']);
-            Route::put('/', [\App\Http\Controllers\Api\UserController::class, 'updatePassword']);
-        });
     });
     Route::apiResource('users', \App\Http\Controllers\Api\UserController::class);
     Route::put('schools', [\App\Http\Controllers\Api\SchoolController::class, 'updateSchool']);

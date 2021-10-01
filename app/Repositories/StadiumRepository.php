@@ -2,11 +2,11 @@
 
 namespace App\Repositories;
 
+use App\Models\Stadium;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Stadium;
 
 class StadiumRepository
 {
@@ -31,14 +31,20 @@ class StadiumRepository
     public function getStadiums(array $data = [], int $limit = null): Collection|LengthAwarePaginator
     {
         $query = Stadium::query()
+            ->when(isset($data['country_id']),
+                fn(Builder $query) => $query->whereHas(
+                    'country',
+                    fn(Builder $builder) => $builder->where('countries.id', $data['country_id'])
+                )
+            )
             ->when(isset($data['country_ids']),
-                fn (Builder $query) =>  $query->whereHas(
+                fn(Builder $query) => $query->whereHas(
                     'country',
                     fn(Builder $builder) => $builder->whereIn('countries.id', $data['country_ids'])
                 )
             )
-            ->when(isset($data['city_ids']), fn (Builder $query) => $query->whereIn('city_id', $data['city_ids']))
-            ->when(isset($data['city_id']), fn (Builder $query) => $query->where('city_id', $data['city_id']))
+            ->when(isset($data['city_id']), fn(Builder $query) => $query->where('city_id', $data['city_id']))
+            ->when(isset($data['city_ids']), fn(Builder $query) => $query->whereIn('city_id', $data['city_ids']))
             ->with('city', 'country');
 
         if ($limit) {
