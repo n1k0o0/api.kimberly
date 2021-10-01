@@ -29,8 +29,8 @@ class GetLeaguesRequest extends FormRequest
         return [
             'limit' => ['nullable', 'integer', 'max:250'],
             'page' => ['nullable', 'integer', 'min:1'],
-            'country_id' => ['required', 'integer', Rule::exists(Country::class, 'id')],
-            'city_id' => ['required', 'integer', Rule::exists(City::class, 'id')],
+            'country_id' => ['nullable', 'integer', Rule::exists(Country::class, 'id')],
+            'city_id' => ['nullable', 'integer', Rule::exists(City::class, 'id')],
         ];
     }
 }

@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Models\Division;
 use App\Models\League;
 use App\Repositories\LeagueRepository;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -20,8 +19,7 @@ class LeagueService
     public function __construct
     (
         private LeagueRepository $leagueRepository
-    )
-    {
+    ) {
     }
 
     /**
@@ -86,6 +84,6 @@ class LeagueService
      */
     public function removeLeague(int $id): mixed
     {
-        return League::query()->where('id')->delete();
+        return League::query()->where('id', $id)->delete();
     }
 }

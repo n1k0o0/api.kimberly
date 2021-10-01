@@ -10,9 +10,7 @@ use App\Repositories\TeamRepository;
 use Carbon\CarbonImmutable;
 use Exception;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
 class GameService
@@ -43,6 +41,7 @@ class GameService
      *
      * @return Game
      * @throws BusinessLogicException
+     * @throws Exception
      */
     public function createGame(array $data): Game
     {
@@ -54,13 +53,17 @@ class GameService
         if ($secondTeam->division_id !== $data['division_id']) {
             throw new BusinessLogicException('Вторая команда не принадлежит указанному дивизиону');
         }
+        if ($firstTeam->division_id !== $secondTeam->division_id) {
+            throw new BusinessLogicException('Команды не принадлежат одному дивизиону');
+        }
         try {
             DB::beginTransaction();
             /** @var Game $game */
             $game = Game::query()->create($data);
             DB::commit();
-        } catch (Exception) {
+        } catch (Exception $exception) {
             DB::rollback();
+            throw $exception;
         }
 
         return $game;

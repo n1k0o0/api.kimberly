@@ -16,8 +16,7 @@ class LeagueController extends ApiController
     public function __construct
     (
         private LeagueService $leagueService
-    )
-    {
+    ) {
     }
 
     /**
