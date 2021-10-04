@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\School;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class SchoolSeeder extends Seeder
@@ -15,19 +16,19 @@ class SchoolSeeder extends Seeder
     public function run()
     {
         School::query()->create([
-            'user_id' => 1,
+            'user_id' => User::where('email', 'teymur@test.ru')->first()->id,
             'city_id' => 1,
             'name' => 'Sporting',
             'status' => School::STATUS_PUBLISHED,
         ]);
         School::query()->create([
-            'user_id' => 2,
+            'user_id' => User::where('email', 'kasparov@mail.ru')->first()->id,
             'city_id' => 1,
             'name' => 'Manchester',
             'status' => School::STATUS_PUBLISHED,
         ]);
         School::query()->create([
-            'user_id' => 2,
+            'user_id' => User::where('email', 'sergey@test.ru')->first()->id,
             'city_id' => 1,
             'name' => 'Juventus',
             'status' => School::STATUS_MODERATION,
