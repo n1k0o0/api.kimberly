@@ -19,7 +19,8 @@ class InternalUserService
      */
     public function __construct(
         private InternalUserRepository $internalUserRepository
-    ) {}
+    ) {
+    }
 
     /**
      * @param string $login
@@ -57,9 +58,7 @@ class InternalUserService
     public function createInternalUser(array $data): Model
     {
         $data['password'] = Hash::make($data['password']);
-        $internalUser = InternalUser::query()->create($data);
-
-        return $internalUser;
+        return InternalUser::query()->create($data);
     }
 
     /**
@@ -85,10 +84,15 @@ class InternalUserService
 
     /**
      * @param int $internalUserId
+     * @throws BusinessLogicException
      */
     public function removeInternalUser(int $internalUserId)
     {
-        InternalUser::query()->where('id', $internalUserId)
-            ->delete();
+        $internalUser = InternalUser::query()->where('id', $internalUserId)
+            ->firstOrFail();
+        if ($internalUser->type === InternalUser::TYPE_SUPER_ADMIN) {
+            throw new BusinessLogicException('Нельзя удалить Супер администратора');
+        }
+        $internalUser->delete();
     }
 }

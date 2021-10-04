@@ -34,4 +34,14 @@ class CreateTournamentRequest extends FormRequest
             'ended_at' => 'required|date|after_or_equal:started_at',
         ];
     }
+
+    public function attributes(): array
+    {
+        return [
+            'name' => 'Имя',
+            'city_id' => 'Город',
+            'started_at' => 'Дата и время начала',
+            'ended_at' => 'Дата и время окончания',
+        ];
+    }
 }

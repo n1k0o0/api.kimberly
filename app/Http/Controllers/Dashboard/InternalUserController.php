@@ -19,8 +19,7 @@ class InternalUserController extends ApiController
      */
     public function __construct(
         private InternalUserService $internalUserService
-    )
-    {
+    ) {
     }
 
     /**
@@ -98,6 +97,7 @@ class InternalUserController extends ApiController
      * @param int $id
      *
      * @return JsonResponse
+     * @throws BusinessLogicException
      */
     public function destroy(int $id): JsonResponse
     {

@@ -9,16 +9,18 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class InternalUser extends Authenticatable implements JWTSubject
 {
-    use HasFactory, Notifiable;
+    use HasFactory;
+    use Notifiable;
 
     protected $table = 'internal_users';
 
-    const TYPE_SUPER_ADMIN = 'super_admin';
-    const TYPE_ADMIN = 'admin';
-    const TYPE_JURY = 'jury';
-    const TYPES = [
+    public const TYPE_SUPER_ADMIN = 'super_admin';
+    public const TYPE_ADMIN = 'admin';
+    public const TYPE_JURY = 'jury';
+    public const TYPES = [
         self::TYPE_ADMIN,
         self::TYPE_JURY,
+        self::TYPE_SUPER_ADMIN,
     ];
 
     protected $fillable = ['login', 'first_name', 'last_name', 'patronymic', 'password', 'phone', 'type'];

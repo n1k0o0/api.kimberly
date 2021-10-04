@@ -36,11 +36,26 @@ class CreateGameRequest extends FormRequest
             'city_id' => ['required', 'integer', Rule::exists(City::class, 'id')],
             'team_1_id' => ['required', 'integer', Rule::exists(Team::class, 'id')],
             'team_2_id' => ['required', 'integer', Rule::exists(Team::class, 'id')],
-            'league_id' => ['nullable', 'integer', Rule::exists(League::class, 'id')],
-            'division_id' => ['nullable', 'integer', Rule::exists(Division::class, 'id')],
-            'tournament_id' => ['nullable', 'integer', Rule::exists(Tournament::class, 'id')],
-            'stadium_id' => ['nullable', 'integer', Rule::exists(Stadium::class, 'id')],
-            'started_at' => ['nullable', 'date'],
+            'league_id' => ['required', 'integer', Rule::exists(League::class, 'id')],
+            'division_id' => ['required', 'integer', Rule::exists(Division::class, 'id')],
+            'tournament_id' => ['required', 'integer', Rule::exists(Tournament::class, 'id')],
+            'stadium_id' => ['required', 'integer', Rule::exists(Stadium::class, 'id')],
+            'started_at' => ['required', 'date'],
+        ];
+    }
+
+    public function attributes(): array
+    {
+        return [
+            'country_id' => 'Страна',
+            'city_id' => 'Город',
+            'team_1_id' => 'Команда 1',
+            'team_2_id' => 'Команда 2',
+            'league_id' => 'Лига',
+            'division_id' => 'Дивизион',
+            'tournament_id' => 'Турнир',
+            'stadium_id' => 'Стадион',
+            'started_at' => 'Дата и время начала',
         ];
     }
 }

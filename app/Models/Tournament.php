@@ -13,10 +13,10 @@ class Tournament extends Model
 
     protected $fillable = ['name', 'status', 'city_id', 'started_at', 'ended_at',];
 
-    const STATUS_NOT_STARTED = 'not_started';
-    const STATUS_CURRENT = 'current';
-    const STATUS_ARCHIVED = 'archived';
-    const STATUSES = [
+    public const STATUS_NOT_STARTED = 'not_started';
+    public const STATUS_CURRENT = 'current';
+    public const STATUS_ARCHIVED = 'archived';
+    public const STATUSES = [
         self::STATUS_NOT_STARTED,
         self::STATUS_CURRENT,
         self::STATUS_ARCHIVED,

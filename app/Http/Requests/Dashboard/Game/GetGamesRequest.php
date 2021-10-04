@@ -35,7 +35,7 @@ class GetGamesRequest extends FormRequest
         return [
             'limit' => ['nullable', 'integer', 'max:250'],
             'page' => ['nullable', 'integer', 'min:1'],
-            
+
             'country_id' => ['required_without:country_ids', 'integer', Rule::exists(Country::class, 'id')],
             'country_ids' => ['required_without:country_id', 'array'],
             'country_ids.*' => ['required', 'integer', Rule::exists(Country::class, 'id')],
@@ -71,6 +71,21 @@ class GetGamesRequest extends FormRequest
             'dates' => ['nullable', 'array'],
             'dates.*' => ['nullable', 'date'],
             'date' => ['nullable', 'date'],
+        ];
+    }
+
+    public function attributes(): array
+    {
+        return [
+            'limit' => 'Лимит',
+            'team_1_id' => 'Команда 1',
+            'page' => 'Страница',
+            'team_2_id' => 'Команда 2',
+            'league_id' => 'Лига',
+            'division_id' => 'Дивизион',
+            'tournament_id' => 'Турнир',
+            'stadium_id' => 'Стадион',
+            'started_at' => 'Дата и время начала',
         ];
     }
 }
