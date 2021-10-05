@@ -19,7 +19,7 @@ class CreateGameRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -41,7 +41,7 @@ class CreateGameRequest extends FormRequest
             'tournament_id' => ['required', 'integer', Rule::exists(Tournament::class, 'id')],
             'stadium_id' => ['required', 'integer', Rule::exists(Stadium::class, 'id')],
             'started_at' => ['required', 'date'],
-            'finished_at' => ['required', 'date'],
+            'finished_at' => ['nullable', 'date'],
         ];
     }
 
@@ -56,8 +56,8 @@ class CreateGameRequest extends FormRequest
             'division_id' => 'Дивизион',
             'tournament_id' => 'Турнир',
             'stadium_id' => 'Стадион',
-            'started_at' => 'Дата и время начала турнира',
-            'finished_at' => 'Дата и время завершения турнира',
+            'started_at' => 'Дата и время начала игры',
+            'finished_at' => 'Дата и время завершения игры',
         ];
     }
 }
