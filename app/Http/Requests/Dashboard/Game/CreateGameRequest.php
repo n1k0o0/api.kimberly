@@ -41,6 +41,7 @@ class CreateGameRequest extends FormRequest
             'tournament_id' => ['required', 'integer', Rule::exists(Tournament::class, 'id')],
             'stadium_id' => ['required', 'integer', Rule::exists(Stadium::class, 'id')],
             'started_at' => ['required', 'date'],
+            'finished_at' => ['required', 'date'],
         ];
     }
 
@@ -55,7 +56,8 @@ class CreateGameRequest extends FormRequest
             'division_id' => 'Дивизион',
             'tournament_id' => 'Турнир',
             'stadium_id' => 'Стадион',
-            'started_at' => 'Дата и время начала',
+            'started_at' => 'Дата и время начала турнира',
+            'finished_at' => 'Дата и время завершения турнира',
         ];
     }
 }

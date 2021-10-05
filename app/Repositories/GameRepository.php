@@ -74,7 +74,8 @@ class GameRepository
             ->when(isset($data['team_ids']), fn(Builder $query) => $query->where(function ($query) use ($data) {
                 $query->whereIn('team_1_id', $data['team_ids'])->orWhereIn('team_2_id', $data['team_ids']);
             }))
-            ->with('firstTeam', 'secondTeam', 'division', 'stadium', 'tournament', 'league',);
+            ->orderBy('created_at', 'desc')
+            ->with('firstTeam', 'secondTeam', 'division', 'stadium', 'tournament', 'league.city',);
         if ($limit) {
             return $query->latest()->paginate($limit);
         }

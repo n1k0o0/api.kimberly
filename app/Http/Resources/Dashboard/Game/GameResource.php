@@ -34,6 +34,7 @@ class GameResource extends JsonResource
             'stadium_id' => $this->stadium_id,
             'stadium' => StadiumResource::make($this->whenLoaded('stadium')),
             'pauses' => GamePauseResource::collection($this->whenLoaded('pauses')),
+            'started_at' => $this->started_at,
         ];
     }
 }

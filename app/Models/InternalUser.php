@@ -60,7 +60,6 @@ class InternalUser extends Authenticatable implements JWTSubject
         return implode(" ", [
             $this->last_name ?? '',
             $this->first_name ?? '',
-            $this->patronymic ?? '',
         ]);
     }
 }

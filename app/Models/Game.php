@@ -22,10 +22,8 @@ class Game extends Model
         'status',
         'scheduled_start_at',
         'started_at',
-        'finished_at'
+        'finished_at',
     ];
-
-    public $timestamps = false;
 
     protected $casts = [
         'id' => 'integer',
