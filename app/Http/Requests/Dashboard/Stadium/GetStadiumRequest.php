@@ -29,13 +29,13 @@ class GetStadiumRequest extends FormRequest
         return [
             'limit' => ['nullable', 'integer', 'max:250'],
             'page' => ['nullable', 'integer', 'min:1'],
-            'country_id' => ['required_without:country_ids', 'integer', Rule::exists(Country::class, 'id')],
-            'country_ids' => ['required_without:country_id', 'array'],
-            'country_ids.*' => ['required', 'integer', Rule::exists(Country::class, 'id')],
+            'country_id' => ['nullable', 'integer', Rule::exists(Country::class, 'id')],
+            'country_ids' => ['nullable', 'array'],
+            'country_ids.*' => ['nullable', 'integer', Rule::exists(Country::class, 'id')],
 
-            'city_id' => ['required_without:city_ids', 'integer', Rule::exists(City::class, 'id')],
-            'city_ids' => ['required_without:city_id', 'array'],
-            'city_ids.*' => ['required', 'integer', Rule::exists(City::class, 'id')],
+            'city_id' => ['nullable', 'integer', Rule::exists(City::class, 'id')],
+            'city_ids' => ['nullable', 'array'],
+            'city_ids.*' => ['nullable', 'integer', Rule::exists(City::class, 'id')],
         ];
     }
 }
