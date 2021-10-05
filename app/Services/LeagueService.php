@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Exceptions\BusinessLogicException;
 use App\Models\League;
 use App\Repositories\LeagueRepository;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -81,9 +82,14 @@ class LeagueService
      * @param int $id
      *
      * @return mixed
+     * @throws BusinessLogicException
      */
     public function removeLeague(int $id): mixed
     {
-        return League::query()->where('id', $id)->delete();
+        $league = League::with('divisions')->where('id', $id)->firstOrFail();
+        if ($league->divisions()->exists()) {
+            throw new BusinessLogicException('Для удаления лиги, удалите сначала все ее дивизионы');
+        }
+        return $league->delete();
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Exceptions\BusinessLogicException;
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\Dashboard\League\CreateLeagueRequest;
 use App\Http\Requests\Dashboard\League\GetLeaguesRequest;
@@ -85,6 +86,7 @@ class LeagueController extends ApiController
      * @param int $id
      *
      * @return JsonResponse
+     * @throws BusinessLogicException
      */
     public function destroy(int $id): JsonResponse
     {
