@@ -37,10 +37,10 @@ class Game extends Model
         'finished_at' => 'datetime',
     ];
 
-    const STATUS_NOT_STARTED = 'not_started';
-    const STATUS_STARTED = 'started';
-    const STATUS_FINISHED = 'finished';
-    const STATUSES = [
+    public const STATUS_NOT_STARTED = 'not_started';
+    public const STATUS_STARTED = 'started';
+    public const STATUS_FINISHED = 'finished';
+    public const STATUSES = [
         self::STATUS_NOT_STARTED,
         self::STATUS_STARTED,
         self::STATUS_FINISHED,

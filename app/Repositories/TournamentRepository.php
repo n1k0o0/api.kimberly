@@ -19,7 +19,7 @@ class TournamentRepository
     {
         return Tournament::query()
             ->with('city', 'country')
-            ->find($tournamentId);
+            ->findOrFail($tournamentId);
     }
 
     /**
@@ -28,22 +28,22 @@ class TournamentRepository
      * @param int|null $limit
      * @return Collection|LengthAwarePaginator
      */
-    public function getTournaments( array $data=[] ,int $limit=null): Collection|LengthAwarePaginator
+    public function getTournaments(array $data = [], int $limit = null): Collection|LengthAwarePaginator
     {
         $query = Tournament::query()
             ->when(isset($data['country_ids']),
-                fn (Builder $query) =>  $query->whereHas(
+                fn(Builder $query) => $query->whereHas(
                     'country',
                     fn(Builder $builder) => $builder->whereIn('countries.id', $data['country_ids'])
                 )
             )
-            ->when(isset($data['city_ids']), fn (Builder $query) => $query->whereIn('city_id', $data['city_ids']))
-            ->when(isset($data['city_id']), fn (Builder $query) => $query->where('city_id', $data['city_id']))
+            ->when(isset($data['city_ids']), fn(Builder $query) => $query->whereIn('city_id', $data['city_ids']))
+            ->when(isset($data['city_id']), fn(Builder $query) => $query->where('city_id', $data['city_id']))
             ->with('city', 'country');
 
-            if ($limit) {
-                return $query->latest()->paginate($limit);
-            }
+        if ($limit) {
+            return $query->latest()->paginate($limit);
+        }
         return $query->get();
     }
 

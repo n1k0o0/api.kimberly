@@ -4,12 +4,12 @@ namespace App\Services;
 
 use App\Events\Tournament\TournamentCreated;
 use App\Exceptions\BusinessLogicException;
+use App\Models\Game;
 use App\Models\Tournament;
 use App\Repositories\TournamentRepository;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
 
 class TournamentService
 {
@@ -19,8 +19,7 @@ class TournamentService
     public function __construct
     (
         private TournamentRepository $tournamentRepository
-    )
-    {
+    ) {
     }
 
     /**
@@ -31,7 +30,7 @@ class TournamentService
      */
     public function getTournaments(array $data = [], int $limit = null): Collection|LengthAwarePaginator
     {
-        return $this->tournamentRepository->getTournaments($data,$limit);
+        return $this->tournamentRepository->getTournaments($data, $limit);
     }
 
     /**
@@ -56,9 +55,7 @@ class TournamentService
      */
     public function getTournamentById(int $tournamentId): Model|Tournament|null
     {
-        $tournament = $this->tournamentRepository->getById($tournamentId);
-
-        return $tournament;
+        return $this->tournamentRepository->getById($tournamentId);
     }
 
     /**
@@ -101,9 +98,7 @@ class TournamentService
      */
     public function getCurrentTournament(int $cityId): Model|Tournament
     {
-        $tournament = $this->tournamentRepository->getCurrentTournament($cityId);
-
-        return $tournament;
+        return $this->tournamentRepository->getCurrentTournament($cityId);
     }
 
     /**
@@ -119,23 +114,23 @@ class TournamentService
         if ($tournament->status === Tournament::STATUS_ARCHIVED) {
             throw new BusinessLogicException('Статус не может быть изменен');
         }
-        if (in_array($status, [Tournament::STATUS_NOT_STARTED, Tournament::STATUS_CURRENT])) {
+        if (in_array($status, [Tournament::STATUS_NOT_STARTED, Tournament::STATUS_CURRENT], true)) {
             $tournament->update([
                 'status' => $status,
             ]);
             return $tournament;
         }
         if ($status === Tournament::STATUS_ARCHIVED) {
-            try {
-                DB::beginTransaction();
-                $tournament->update([
-                    'status' => $status,
-                ]);
-                // TODO Добавить обработку матчей
-                DB::commit();
-            } catch (\Exception) {
-                DB::rollBack();
+            if (Game::query()->where('tournament_id', $tournamentId)->where(
+                'status',
+                '<>',
+                Game::STATUS_FINISHED
+            )->first()) {
+                throw new BusinessLogicException('Ошибка. Для турнира есть не завершенные матчи');
             }
+            $tournament->update([
+                'status' => $status,
+            ]);
         }
 
         return $tournament;

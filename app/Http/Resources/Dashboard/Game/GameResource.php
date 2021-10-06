@@ -22,6 +22,8 @@ class GameResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'team_1_id' => $this->team_1_id,
+            'team_2_id' => $this->team_2_id,
             'team_1' => TeamResource::make($this->whenLoaded('firstTeam')),
             'team_2' => TeamResource::make($this->whenLoaded('secondTeam')),
             'division_id' => $this->division_id,
