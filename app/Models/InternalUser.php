@@ -62,4 +62,19 @@ class InternalUser extends Authenticatable implements JWTSubject
             $this->first_name ?? '',
         ]);
     }
+
+    public function isSuperAdmin(): bool
+    {
+        return $this->type === self::TYPE_SUPER_ADMIN;
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->type === self::TYPE_ADMIN;
+    }
+
+    public function isJury(): bool
+    {
+        return $this->type === self::TYPE_JURY;
+    }
 }

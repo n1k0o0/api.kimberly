@@ -86,11 +86,11 @@ class InternalUserService
      * @param int $internalUserId
      * @throws BusinessLogicException
      */
-    public function removeInternalUser(int $internalUserId)
+    public function removeInternalUser(int $internalUserId): void
     {
         $internalUser = InternalUser::query()->where('id', $internalUserId)
             ->firstOrFail();
-        if ($internalUser->type === InternalUser::TYPE_SUPER_ADMIN) {
+        if ($internalUser->isSuperAdmin()) {
             throw new BusinessLogicException('Нельзя удалить Супер администратора');
         }
         $internalUser->delete();
