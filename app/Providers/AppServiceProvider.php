@@ -26,5 +26,10 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Date::use(CarbonImmutable::class);
+        if (config('app.debug')) {
+            \DB::listen(function ($query) {
+                logger($query->sql, $query->bindings);
+            });
+        }
     }
 }

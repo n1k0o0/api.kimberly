@@ -86,8 +86,18 @@ class LeagueService
      */
     public function removeLeague(int $id): mixed
     {
-        $league = League::with('divisions')->where('id', $id)->firstOrFail();
-        if ($league->divisions()->exists()) {
+        $league = League::query()
+            ->addSelect([
+                'has_division' => function ($q) use ($id) {
+                    $q->select('id')
+                        ->from('divisions')
+                        ->where('divisions.league_id', $id)
+                        ->limit(1);
+                }
+            ])
+            ->where('id', $id)
+            ->firstOrFail();
+        if ($league->has_division) {
             throw new BusinessLogicException('Для удаления лиги, удалите сначала все ее дивизионы');
         }
         return $league->delete();
