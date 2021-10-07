@@ -2,7 +2,12 @@
 
 namespace App\Http\Requests\Dashboard\School;
 
+use App\Models\City;
+use App\Models\Country;
+use App\Models\Division;
+use App\Models\League;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class PaginateSchoolsRequest extends FormRequest
 {
@@ -11,7 +16,7 @@ class PaginateSchoolsRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -24,11 +29,26 @@ class PaginateSchoolsRequest extends FormRequest
     public function rules()
     {
         return [
-            'limit' => 'sometimes|integer|nullable',
-            'country_ids' => 'sometimes|array',
-            'country_id' => 'sometimes|integer',
-            'city_ids' => 'sometimes|array',
-            'city_id' => 'sometimes|integer',
+            'limit' => ['nullable', 'integer', 'max:250'],
+            'page' => ['nullable', 'integer', 'min:1'],
+
+            'country_id' => ['nullable', 'integer', Rule::exists(Country::class, 'id')],
+            'country_ids' => ['nullable', 'array'],
+            'country_ids.*' => ['nullable', 'integer', Rule::exists(Country::class, 'id')],
+
+            'city_id' => ['nullable', 'integer', Rule::exists(City::class, 'id')],
+            'city_ids' => ['nullable', 'array'],
+            'city_ids.*' => ['nullable', 'integer', Rule::exists(City::class, 'id')],
+
+            'league_ids' => ['nullable', 'array'],
+            'league_ids.*' => ['nullable', 'integer', Rule::exists(League::class, 'id')],
+            'league_id' => ['nullable', 'integer', Rule::exists(League::class, 'id')],
+
+            'division_ids' => ['nullable', 'array'],
+            'division_ids.*' => ['nullable', 'integer', Rule::exists(Division::class, 'id')],
+            'division_id' => ['nullable', 'integer', Rule::exists(Division::class, 'id')],
+
+            'name' => ['nullable', 'string'],
         ];
     }
 }

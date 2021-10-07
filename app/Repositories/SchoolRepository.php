@@ -18,7 +18,18 @@ class SchoolRepository
     public function getById(int $tournamentId): Model|School|null
     {
         return School::query()
-            ->with('city', 'country', 'coaches', 'coaches.avatar', 'teams', 'teams.division', 'teams.league', 'teams.color', 'social_links', 'media_avatar')
+            ->with(
+                'city',
+                'country',
+                'coaches',
+                'coaches.avatar',
+                'teams',
+                'teams.division',
+                'teams.league',
+                'teams.color',
+                'social_links',
+                'media_avatar'
+            )
             ->find($tournamentId);
     }
 
@@ -38,12 +49,37 @@ class SchoolRepository
                     fn(Builder $builder) => $builder->whereIn('countries.id', $data['country_ids'])
                 )
             )
-            ->when(isset($data['country_id']), fn (Builder $query) => $query->whereHas(
+            ->when(isset($data['country_id']), fn(Builder $query) => $query->whereHas(
                 'country',
                 fn(Builder $builder) => $builder->where('countries.id', $data['country_id'])
             ))
             ->when(isset($data['city_ids']), fn(Builder $query) => $query->whereIn('city_id', $data['city_ids']))
-            ->when(isset($data['city_id']), fn (Builder $query) => $query->where('city_id', $data['city_id']))
+            ->when(isset($data['city_id']), fn(Builder $query) => $query->where('city_id', $data['city_id']))
+            ->when(isset($data['name']), fn(Builder $query) => $query->where('name', 'like', '%' . $data['name'] . '%'))
+            ->when(
+                isset($data['league_id']),
+                fn(Builder $query) => $query->whereHas('teams.division', function ($q) use ($data) {
+                    $q->where('league_id', $data['league_id']);
+                })
+            )
+            ->when(
+                isset($data['division_id']),
+                fn(Builder $query) => $query->whereHas('teams', function ($q) use ($data) {
+                    $q->where('division_id', $data['division_id']);
+                })
+            )
+            ->when(
+                isset($data['league_ids']),
+                fn(Builder $query) => $query->whereHas('teams.division', function ($q) use ($data) {
+                    $q->whereIn('league_id', $data['league_ids']);
+                })
+            )
+            ->when(
+                isset($data['division_ids']),
+                fn(Builder $query) => $query->whereHas('teams', function ($q) use ($data) {
+                    $q->whereIn('division_id', $data['division_ids']);
+                })
+            )
             ->with('city', 'country');
 
         if ($limit) {
