@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests\Dashboard\School\Team;
 
+use App\Models\Division;
+use App\Models\TeamColor;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateTeamRequest extends FormRequest
 {
@@ -11,7 +14,7 @@ class UpdateTeamRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -24,9 +27,8 @@ class UpdateTeamRequest extends FormRequest
     public function rules()
     {
         return [
-            'school_id' => 'sometimes|integer|exists:schools,id',
-            'division_id' => 'sometimes|integer|exists:divisions,id',
-            'color_id' => 'sometimes|integer|exists:team_colors,id',
+            'color_id' => ['nullable', 'integer', Rule::exists(TeamColor::class, 'id')],
+            'division_id' => ['required', 'integer', Rule::exists(Division::class, 'id')],
         ];
     }
 }

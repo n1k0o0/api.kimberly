@@ -49,7 +49,7 @@ class TeamService
      */
     public function updateTeam(int $teamId, array $data): Model|Collection|null
     {
-        $team = Team::query()->find($teamId);
+        $team = Team::query()->without('color')->find($teamId);
         $team->update($data);
         $team->loadMissing('division', 'league', 'color');
 

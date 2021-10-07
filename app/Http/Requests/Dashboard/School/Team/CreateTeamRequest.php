@@ -15,7 +15,7 @@ class CreateTeamRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -29,7 +29,7 @@ class CreateTeamRequest extends FormRequest
     {
         return [
             'school_id' => ['required', 'integer', Rule::exists(School::class, 'id')],
-            'color_id' => ['required', 'integer', Rule::exists(TeamColor::class, 'id')],
+            'color_id' => ['nullable', 'integer', Rule::exists(TeamColor::class, 'id')],
             'division_id' => ['required', 'integer', Rule::exists(Division::class, 'id')],
         ];
     }

@@ -27,7 +27,7 @@ class TeamResource extends JsonResource
             'league_id' => $this->when($this->relationLoaded('league'), optional($this->league)->id),
             'league' => LeagueResource::make($this->whenLoaded('league')),
             'school' => SchoolResource::make($this->whenLoaded('school')),
-            'name' => $this->school->name . ' ' . $this->color->color
+            'name' => $this->school->name . ' ' . data_get($this, 'color.color')
         ];
     }
 }
