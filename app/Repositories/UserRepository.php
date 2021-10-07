@@ -41,11 +41,21 @@ class UserRepository
     public function getUsers(array $data, ?int $limit = null): Collection|LengthAwarePaginator
     {
         $query = User::query()
-            ->when(isset($data['login']), fn (Builder $query) =>  $query->where('email', 'LIKE', '%' . $data['login'] . '%'))
-            ->when(isset($data['types']), fn (Builder $query) =>  $query->whereIn('type', $data['types']))
-            ->when(isset($data['statuses']), fn (Builder $query) =>  $query->whereIn('status', $data['statuses']))
-            ->when(isset($data['created_at_start']), fn (Builder $query) =>  $query->whereDate('created_at', '>=', $data['created_at_start']))
-            ->when(isset($data['created_at_end']), fn (Builder $query) =>  $query->where('created_at', '<=', $data['created_at_end']));;
+            ->when(
+                isset($data['login']),
+                fn(Builder $query) => $query->where('email', 'LIKE', '%' . $data['login'] . '%')
+            )
+            ->when(isset($data['types']), fn(Builder $query) => $query->whereIn('type', $data['types']))
+            ->when(isset($data['statuses']), fn(Builder $query) => $query->whereIn('status', $data['statuses']))
+            ->when(
+                isset($data['created_at_start']),
+                fn(Builder $query) => $query->whereDate('created_at', '>=', $data['created_at_start'])
+            )
+            ->when(
+                isset($data['created_at_end']),
+                fn(Builder $query) => $query->where('created_at', '<=', $data['created_at_end'])
+            )
+            ->with('school', 'avatar');
 
         if ($limit) {
             return $query->latest()->paginate($limit);
