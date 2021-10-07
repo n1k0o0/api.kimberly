@@ -21,11 +21,9 @@ class SchoolRepository
             ->with(
                 'city',
                 'country',
-                'coaches',
                 'coaches.avatar',
-                'teams',
                 'teams.division',
-                'teams.league',
+                'teams.league.city',
                 'teams.color',
                 'social_links',
                 'media_avatar'
