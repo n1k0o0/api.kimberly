@@ -36,7 +36,7 @@ class TeamService
     public function createTeam(array $data): Model
     {
         $team = Team::query()->create($data);
-        $team->loadMissing('division', 'league', 'color');
+        $team->loadMissing('division', 'league.city', 'color');
 
         return $team;
     }
