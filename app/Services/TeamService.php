@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Exceptions\BusinessLogicException;
 use App\Models\Team;
 use App\Repositories\TeamRepository;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -32,9 +33,29 @@ class TeamService
      * @param array $data
      *
      * @return Model
+     * @throws BusinessLogicException
      */
     public function createTeam(array $data): Model
     {
+        $teams = Team::query()->without('school', 'color')->where('school_id', $data['school_id'])->where(
+            'division_id',
+            $data['division_id']
+        )->get();
+
+        if ($teams->isNotEmpty()) {
+            if (count($teams) === 3) {
+                throw new BusinessLogicException("Создано максимальное количество команд");
+            }
+            if (is_null($data['color_id'])) {
+                throw new BusinessLogicException("Обязательно выберите цвет при создании 2-х одинаковых команд");
+            }
+            if ($teams->contains(function ($value, $key) use ($data) {
+                return $value->color_id === (int)$data['color_id'];
+            })) {
+                throw new BusinessLogicException("Этот цвет уже выбран");
+            }
+        }
+
         $team = Team::query()->create($data);
         $team->loadMissing('division', 'league.city', 'color');
 
@@ -46,10 +67,30 @@ class TeamService
      * @param array $data
      *
      * @return Model|Collection|null
+     * @throws BusinessLogicException
      */
     public function updateTeam(int $teamId, array $data): Model|Collection|null
     {
-        $team = Team::query()->without('color')->find($teamId);
+        $team = Team::query()->without('color')->findOrFail($teamId);
+
+        $teams = Team::query()->where('school_id', $team->school_id)->where('division_id', $team->division_id)->where(
+            'id',
+            '<>',
+            $team->id
+        )->get();
+
+        if ($teams->isNotEmpty()) {
+            if (empty($data['color_id'])) {
+                throw new BusinessLogicException("Обязательно выберите цвет при создании 2-х одинаковых команд");
+            }
+
+            if ($teams->contains(function ($value, $key) use ($data) {
+                return $value->color_id === (int)$data['color_id'];
+            })) {
+                throw new BusinessLogicException("Этот цвет уже выбран");
+            }
+        }
+
         $team->update($data);
         $team->loadMissing('division', 'league', 'color');
 
