@@ -92,7 +92,7 @@ class TeamService
         }
 
         $team->update($data);
-        $team->loadMissing('division', 'league', 'color');
+        $team->loadMissing('division', 'league.city', 'color');
 
         return $team;
     }
