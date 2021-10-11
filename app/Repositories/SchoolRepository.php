@@ -28,7 +28,7 @@ class SchoolRepository
                 'social_links',
                 'media_avatar'
             )
-            ->find($tournamentId);
+            ->findOrFail($tournamentId);
     }
 
     /**

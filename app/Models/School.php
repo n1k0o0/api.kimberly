@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\Media\InteractsWithMedia;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -11,14 +12,32 @@ use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Spatie\MediaLibrary\HasMedia;
-use App\Support\Media\InteractsWithMedia;
 
 class School extends Model implements HasMedia
 {
     use HasFactory;
     use InteractsWithMedia;
 
-    protected $fillable = ['user_id', 'city_id', 'status', 'name', 'description', 'email', 'phone', 'branch_count'];
+    protected $fillable = [
+        'user_id',
+        'city_id',
+        'status',
+        'name',
+        'description',
+        'email',
+        'phone',
+        'branch_count',
+        'inst_link',
+        'youtube_link',
+        'vk_link',
+        'diagram_link'
+    ];
+
+    protected $casts = [
+        'user_id' => 'integer',
+        'city_id' => 'integer',
+        'id' => 'integer',
+    ];
 
     const AVATAR_MEDIA_COLLECTION = 'avatar';
 

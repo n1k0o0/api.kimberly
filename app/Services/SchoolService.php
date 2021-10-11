@@ -4,42 +4,41 @@ namespace App\Services;
 
 use App\Events\School\SchoolCreated;
 use App\Exceptions\BusinessLogicException;
+use App\Models\Coach;
 use App\Models\School;
 use App\Models\User;
 use App\Repositories\SchoolRepository;
 use App\Repositories\UserRepository;
+use Exception;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
+use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
 
 class SchoolService
 {
-    /**
-     */
     public function __construct
     (
         private SchoolRepository $schoolRepository,
         private UserRepository $userRepository
-    )
-    {
+    ) {
     }
 
     /**
      * @param array $data
-     * @param int $limit
+     * @param int|null $limit
      *
      * @return Collection|LengthAwarePaginator
      */
     public function getSchools(array $data = [], int $limit = null): Collection|LengthAwarePaginator
     {
-        $schools = $this->schoolRepository->getSchools($data, $limit);
-
-        return $schools;
+        return $this->schoolRepository->getSchools($data, $limit);
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function createSchool(int $userId, array $data): Model
     {
@@ -59,10 +58,36 @@ class SchoolService
                 $school->loadMissing('media_avatar');
             }
             if (isset($data['teams'])) {
+                $result = [];
+                foreach ($data['teams'] as $element) {
+                    $result[$element['division_id']][] = $element;
+                }
+
+                foreach ($result as $team) {
+                    if (count($team) > 1) {
+                        $color_ids = array_map(static fn($value) => data_get($value, 'color_id'), $team);
+                        if (in_array(null, $color_ids, true)) {
+                            throw new BusinessLogicException(
+                                "Обязательно выберите цвет при создании 2-х одинаковых команд"
+                            );
+                        }
+                        if ((count($color_ids) !== count(array_unique($color_ids)))) {
+                            throw new BusinessLogicException("Выберите разные цвета");
+                        }
+                    }
+                }
+
                 $school->teams()->createMany($data['teams']);
             }
             if (isset($data['coaches'])) {
-                $school->coaches()->createMany($data['coaches']);
+                $coaches = $school->coaches()->createMany($data['coaches']);
+                $coaches->each(function ($item, $key) use ($data) {
+                    if (data_get($data['coaches'][$key], 'avatar')) {
+                        $item->addMedia($data['coaches'][$key]['avatar'])->toMediaCollection(
+                            Coach::AVATAR_MEDIA_COLLECTION
+                        );
+                    }
+                });
             }
             if (isset($data['social_links'])) {
                 $school->coaches()->createMany($data['social_links']);
@@ -70,7 +95,7 @@ class SchoolService
 
             DB::commit();
             event(new SchoolCreated($school));
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             DB::rollBack();
             throw $exception;
         }
@@ -85,9 +110,7 @@ class SchoolService
      */
     public function getSchoolById(int $schoolId): Model|School|null
     {
-        $school = $this->schoolRepository->getById($schoolId);
-
-        return $school;
+        return $this->schoolRepository->getById($schoolId);
     }
 
     /**
@@ -95,8 +118,8 @@ class SchoolService
      * @param array $data
      *
      * @return Model|School|null
-     * @throws \Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist
-     * @throws \Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig
+     * @throws FileDoesNotExist
+     * @throws FileIsTooBig
      */
     public function updateSchool(int $schoolId, array $data): Model|School|null
     {
@@ -105,11 +128,11 @@ class SchoolService
             DB::beginTransaction();
             $school->update($data);
             if (isset($data['avatar'])) {
-                $school->replaceMedia($data['avatar'],School::AVATAR_MEDIA_COLLECTION);
+                $school->replaceMedia($data['avatar'], School::AVATAR_MEDIA_COLLECTION);
                 $school->loadMissing('media_avatar');
             }
             DB::commit();
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             DB::rollBack();
             throw $exception;
         }
@@ -157,6 +180,7 @@ class SchoolService
      *
      * @return School|Model
      * @throws BusinessLogicException
+     * @throws Exception
      */
     public function updateSchoolByUserId(int $userId, array $data): School|Model
     {
@@ -180,7 +204,7 @@ class SchoolService
                 $school->social_links()->updateOrInsert($data['social_links']);
             }
             DB::commit();
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             DB::rollBack();
             throw $exception;
         }

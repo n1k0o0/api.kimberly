@@ -8,6 +8,7 @@ use App\Http\Resources\Country\CountryResource;
 use App\Http\Resources\SocialLink\SocialLinkResource;
 use App\Http\Resources\Team\TeamResource;
 use App\Http\Resources\User\UserResource;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class SchoolResource extends JsonResource
@@ -15,7 +16,7 @@ class SchoolResource extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param Request $request
      * @return array
      */
     public function toArray($request)
@@ -30,6 +31,10 @@ class SchoolResource extends JsonResource
             'email' => $this->email,
             'phone' => $this->phone,
             'branch_count' => $this->branch_count,
+            'inst_link' => $this->inst_link,
+            'youtube_link' => $this->youtube_link,
+            'vk_link' => $this->vk_link,
+            'diagram_link' => $this->diagram_link,
             'city' => CityResource::make($this->whenLoaded('city')),
             'country_id' => $this->when($this->country, $this->country->id),
             'user' => UserResource::make($this->whenLoaded('user')),
