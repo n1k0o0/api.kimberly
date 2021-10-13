@@ -89,6 +89,6 @@ Route::middleware(['auth:users'])->group(function () {
         Route::post('me', [\App\Http\Controllers\Api\UserController::class, 'getMe']);
     });
     Route::apiResource('users', \App\Http\Controllers\Api\UserController::class);
-    Route::put('schools', [\App\Http\Controllers\Api\SchoolController::class, 'updateSchool']);
+    Route::post('school', [\App\Http\Controllers\Api\SchoolController::class, 'updateSchool']);
     Route::apiResource('schools', \App\Http\Controllers\Api\SchoolController::class);
 });

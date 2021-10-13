@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Exceptions\BusinessLogicException;
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\Api\School\CreateSchoolRequest;
-use App\Http\Requests\Dashboard\School\UpdateSchoolRequest;
+use App\Http\Requests\Api\School\UpdateSchoolRequest;
 use App\Http\Resources\School\SchoolResource;
 use App\Services\SchoolService;
 use Exception;

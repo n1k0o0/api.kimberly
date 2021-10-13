@@ -51,12 +51,7 @@ class Handler extends ExceptionHandler
             $data = ($status === 422 || $e instanceof ValidationException) ? [] : $this->convertExceptionToArray($e);
             $headers = $this->isHttpException($e) ? $e->getHeaders() : [];
 
-            if ($status === 400 || $e instanceof BadRequestHttpException) {
-                if (!isset($data['message'])) {
-                    $data['message'] = 'Bad Request.';
-                }
-                $status = 401;
-            } elseif ($status === 401 || $e instanceof AuthenticationException) {
+            if ($status === 401 || $e instanceof AuthenticationException) {
                 if (!isset($data['message'])) {
                     $data['message'] = 'Sorry, you are not authorized to access this data.';
                 }
